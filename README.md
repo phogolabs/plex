@@ -22,7 +22,7 @@ import (
 func main() {
 	// create the plex server
 	server := plex.NewServer(
-		plex.WithAddress(config.Address),
+		plex.WithAddress(":8080"),
 	)
 
 	log.Infof("server is listening on %v for grpc or http", server.Address())

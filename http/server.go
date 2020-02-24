@@ -14,16 +14,26 @@ import (
 type Server struct {
 	httpSrv *http.Server
 	mux     *runtime.ServeMux
-	router  chi.Router
 }
 
 // NewServer creates a new http server
 func NewServer() *Server {
+	mux := runtime.NewServeMux()
+
+	router := chi.NewRouter()
+	router.Mount("/", mux)
+
 	return &Server{
-		router:  chi.NewRouter(),
-		mux:     runtime.NewServeMux(),
-		httpSrv: &http.Server{},
+		mux: mux,
+		httpSrv: &http.Server{
+			Handler: router,
+		},
 	}
+}
+
+// Router returns the underlying router
+func (srv *Server) Router() chi.Router {
+	return srv.httpSrv.Handler.(chi.Router)
 }
 
 // Register register a service
@@ -43,28 +53,14 @@ func (srv *Server) Register(registrator, service interface{}) {
 	fn.Call(params)
 }
 
-// Use appends one or more middlewares onto the Router stack.
-func (srv *Server) Use(middlewares ...func(http.Handler) http.Handler) {
-	srv.router.Use(middlewares...)
-}
-
 // Serve serves the mux
 func (srv *Server) Serve(mux cmux.CMux) error {
-	if srv.httpSrv.Handler == nil {
-		srv.router.Mount("/", srv.mux)
-		srv.httpSrv.Handler = srv.router
-	}
-
 	listener := mux.Match(cmux.HTTP1Fast())
 	return srv.httpSrv.Serve(listener)
 }
 
 // Shutdown shutdowns the server
 func (srv *Server) Shutdown(ctx context.Context) error {
-	if srv.httpSrv.Handler == nil {
-		return nil
-	}
-
 	if err := srv.httpSrv.Shutdown(ctx); err != nil {
 		return err
 	}
