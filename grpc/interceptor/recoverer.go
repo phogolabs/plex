@@ -18,7 +18,7 @@ type RecoveryHandlerFuncContext func(ctx context.Context, p interface{}) (err er
 
 // RecoveryHandler represents an interceptor that recovers from panic
 type RecoveryHandler struct {
-	Handler RecoverHandlerFuncContext
+	Handler RecoveryHandlerFuncContext
 }
 
 // Unary does unary logging
@@ -38,6 +38,11 @@ func (l *RecoveryHandler) Unary(ctx context.Context, req interface{}, info *grpc
 
 // Stream does stream logging
 func (l *RecoveryHandler) Stream(srv interface{}, stream grpc.ServerStream, info *grpc.StreamServerInfo, handler grpc.StreamHandler) (err error) {
+	var (
+		ctx    = stream.Context()
+		logger = log.GetContext(ctx)
+	)
+
 	defer func() {
 		if r := recover(); r != nil {
 			if err = l.recoverFrom(ctx, r); err != nil {

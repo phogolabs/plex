@@ -24,7 +24,9 @@ func (l *LogHandler) Unary(ctx context.Context, req interface{}, info *grpc.Unar
 		"method":  info.FullMethod,
 	})
 
-	logger.Info("executing method")
+	ctx = log.SetContext(ctx, logger)
+
+	logger.Info("executing method start")
 	response, err := handler(ctx, req)
 
 	if err != nil {
@@ -55,7 +57,13 @@ func (l *LogHandler) Stream(srv interface{}, stream grpc.ServerStream, info *grp
 		"method":  info.FullMethod,
 	})
 
-	logger.Info("streaming method")
+	logger.Info("streaming method start")
+
+	stream = &ServerStream{
+		Ctx:    log.SetContext(ctx, logger),
+		Stream: stream,
+	}
+
 	err := handler(srv, stream)
 
 	if err != nil {
