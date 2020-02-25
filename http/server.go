@@ -13,27 +13,22 @@ import (
 // Server represents a http server
 type Server struct {
 	httpSrv *http.Server
+	router  chi.Router
 	mux     *runtime.ServeMux
 }
 
 // NewServer creates a new http server
 func NewServer() *Server {
-	mux := runtime.NewServeMux()
-
-	router := chi.NewRouter()
-	router.Mount("/", mux)
-
 	return &Server{
-		mux: mux,
-		httpSrv: &http.Server{
-			Handler: router,
-		},
+		mux:     runtime.NewServeMux(),
+		router:  chi.NewRouter(),
+		httpSrv: &http.Server{},
 	}
 }
 
 // Router returns the underlying router
 func (srv *Server) Router() chi.Router {
-	return srv.httpSrv.Handler.(chi.Router)
+	return srv.router
 }
 
 // Register register a service
@@ -55,6 +50,11 @@ func (srv *Server) Register(registrator, service interface{}) {
 
 // Serve serves the mux
 func (srv *Server) Serve(mux cmux.CMux) error {
+	if srv.httpSrv.Handler == nil {
+		srv.router.Mount("/", srv.mux)
+		srv.httpSrv.Handler = srv.router
+	}
+
 	listener := mux.Match(cmux.HTTP1Fast())
 	return srv.httpSrv.Serve(listener)
 }
