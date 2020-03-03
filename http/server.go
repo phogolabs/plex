@@ -10,6 +10,9 @@ import (
 	"github.com/soheilhy/cmux"
 )
 
+// ServeMuxOption is an option that can be given to a ServeMux on construction.
+type ServeMuxOption = runtime.ServeMuxOption
+
 // Server represents a http server
 type Server struct {
 	httpSrv *http.Server
@@ -18,9 +21,9 @@ type Server struct {
 }
 
 // NewServer creates a new http server
-func NewServer() *Server {
+func NewServer(opts ...ServeMuxOption) *Server {
 	return &Server{
-		mux:     runtime.NewServeMux(),
+		mux:     runtime.NewServeMux(opts...),
 		router:  chi.NewRouter(),
 		httpSrv: &http.Server{},
 	}
