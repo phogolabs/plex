@@ -17,8 +17,23 @@ type ValidationHandler struct{}
 
 // Unary does unary validation
 func (l *ValidationHandler) Unary(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {
-	if err := validate.New().StructCtx(ctx, req); err != nil {
-		err = status.Error(codes.InvalidArgument, err.Error())
+	type Validator interface {
+		Validate() error
+	}
+
+	var err error
+
+	if validator, ok := req.(Validator); ok {
+		err = validator.Validate()
+	} else {
+		err = validate.New().StructCtx(ctx, req)
+	}
+
+	if err != nil {
+		if _, ok := status.FromError(err); !ok {
+			err = status.Error(codes.InvalidArgument, err.Error())
+		}
+
 		return nil, err
 	}
 
