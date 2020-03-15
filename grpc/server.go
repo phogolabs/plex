@@ -37,7 +37,7 @@ func (srv *Server) Use(interceptors ...Interceptor) {
 
 // Register register a service
 func (srv *Server) Register(registrator, service interface{}) {
-	srv.init()
+	srv.initialize()
 	fn := reflect.ValueOf(registrator)
 
 	if fn.Type().Kind() != reflect.Func {
@@ -54,7 +54,7 @@ func (srv *Server) Register(registrator, service interface{}) {
 
 // Serve serves the mux
 func (srv *Server) Serve(mux cmux.CMux) error {
-	srv.init()
+	srv.initialize()
 	listener := mux.Match(cmux.HTTP2HeaderField("content-type", ContentType))
 	return srv.grpcSrv.Serve(listener)
 }
@@ -69,7 +69,7 @@ func (srv *Server) Shutdown(ctx context.Context) error {
 	return nil
 }
 
-func (srv *Server) init() {
+func (srv *Server) initialize() {
 	if srv.grpcSrv != nil {
 		return
 	}

@@ -16,7 +16,7 @@ type contextKey struct {
 
 // String represent the context key
 func (k *contextKey) String() string {
-	return "log: context value " + k.name
+	return "interceptor: context value " + k.name
 }
 
 // ServerStream defines the server-side behavior of a streaming RPC.

@@ -54,13 +54,21 @@ func (srv *Server) Socket() *grpc.Server {
 	return srv.grpcSrv
 }
 
-// ListenAndServe listens and server
+// ListenAndServe listens on the TCP network address srv.Addr and then
+// calls Serve to handle requests on incoming connections.
+// Accepted connections are configured to enable TCP keep-alives.
 func (srv *Server) ListenAndServe() error {
 	listener, err := net.Listen("tcp", srv.addr)
 	if err != nil {
 		return err
 	}
 
+	return srv.Serve(listener)
+}
+
+// Serve accepts incoming connections on the Listener l, creating a
+// new service goroutine for each.
+func (srv *Server) Serve(listener net.Listener) (err error) {
 	var (
 		mux   = cmux.New(listener)
 		group = errgroup.Group{}

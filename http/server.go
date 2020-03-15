@@ -7,6 +7,7 @@ import (
 
 	"github.com/go-chi/chi"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
+	"github.com/phogolabs/plex/http/middleware"
 	"github.com/soheilhy/cmux"
 )
 
@@ -15,15 +16,22 @@ type ServeMuxOption = runtime.ServeMuxOption
 
 // Server represents a http server
 type Server struct {
+	mux     *runtime.ServeMux
 	httpSrv *http.Server
 	router  chi.Router
-	mux     *runtime.ServeMux
 }
 
 // NewServer creates a new http server
 func NewServer(opts ...ServeMuxOption) *Server {
+	settings := []ServeMuxOption{
+		AllIncomingHeaders,
+		AllOutgoingHeaders,
+	}
+
+	settings = append(settings, opts...)
+
 	return &Server{
-		mux:     runtime.NewServeMux(opts...),
+		mux:     runtime.NewServeMux(settings...),
 		router:  chi.NewRouter(),
 		httpSrv: &http.Server{},
 	}
@@ -53,10 +61,7 @@ func (srv *Server) Register(registrator, service interface{}) {
 
 // Serve serves the mux
 func (srv *Server) Serve(mux cmux.CMux) error {
-	if srv.httpSrv.Handler == nil {
-		srv.router.Mount("/", srv.mux)
-		srv.httpSrv.Handler = srv.router
-	}
+	srv.initialize()
 
 	listener := mux.Match(cmux.HTTP1Fast())
 	return srv.httpSrv.Serve(listener)
@@ -69,4 +74,14 @@ func (srv *Server) Shutdown(ctx context.Context) error {
 	}
 
 	return nil
+}
+
+func (srv *Server) initialize() {
+	if srv.httpSrv.Handler == nil {
+		srv.router.Use(middleware.StripSlashes)
+		srv.router.Use(middleware.ServerTransport)
+
+		srv.router.Mount("/", srv.mux)
+		srv.httpSrv.Handler = srv.router
+	}
 }

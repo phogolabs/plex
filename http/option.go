@@ -1,6 +1,8 @@
 package http
 
-import "github.com/grpc-ecosystem/grpc-gateway/runtime"
+import (
+	"github.com/grpc-ecosystem/grpc-gateway/runtime"
+)
 
 type (
 	// HeaderMatcherFunc checks whether a header key should be forwarded to/from gRPC context.
@@ -62,4 +64,16 @@ var (
 	// match wins" behavior, where if multiple path patterns match a
 	// request path, the last one defined in the .proto file will be used.
 	WithLastMatchWins = runtime.WithLastMatchWins
+)
+
+var (
+	// AllIncomingHeaders allows the service to handle all incoming request
+	AllIncomingHeaders = runtime.WithIncomingHeaderMatcher(func(h string) (string, bool) {
+		return h, true
+	})
+
+	// AllOutgoingHeaders allows the service to handle all incoming request
+	AllOutgoingHeaders = runtime.WithOutgoingHeaderMatcher(func(h string) (string, bool) {
+		return h, true
+	})
 )
