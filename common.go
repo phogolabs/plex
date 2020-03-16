@@ -11,11 +11,13 @@ import (
 // SetCookie adds a Set-Cookie header to the provided server transport context.
 // The provided cookie must have a valid Name. Invalid cookies may be
 // silently dropped.
-func SetCookie(ctx context.Context, cookie *http.Cookie) {
+func SetCookie(ctx context.Context, cookie *http.Cookie) error {
 	if v := cookie.String(); v != "" {
 		md := metadata.Pairs("Set-Cookie", v)
-		grpc.SetHeader(ctx, md)
+		return grpc.SetHeader(ctx, md)
 	}
+
+	return nil
 }
 
 // CookieFromIncomingContext returns the cookie
