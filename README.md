@@ -24,7 +24,7 @@ func main() {
 	server := plex.NewServer()
 
 	// register the http proxy
-	server.Proxy.Register(sdk.RegisterYourAPIHandler)
+	server.Proxy.Use(sdk.RegisterYourAPIHandler)
 
 	// register the server handler
 	sdk.RegisterYourAPIServer(server.Gateway.Server, handler)
