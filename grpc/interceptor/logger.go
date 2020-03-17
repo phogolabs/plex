@@ -2,11 +2,12 @@ package interceptor
 
 import (
 	"context"
-	"fmt"
 	"strings"
+	"time"
 
 	"github.com/phogolabs/log"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/metadata"
 )
 
 // Logger is the log interceptor
@@ -17,24 +18,26 @@ type LogHandler struct{}
 
 // Unary does unary logging
 func (l *LogHandler) Unary(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {
+	fields := annotation(ctx)
+	fields["method"] = info.FullMethod
+
 	logger := log.GetContext(ctx)
+	logger = logger.WithFields(fields)
+
+	start := time.Now()
+	ctx = log.SetContext(ctx, logger)
+	response, err := handler(ctx, req)
 
 	logger = logger.WithFields(log.Map{
-		"handler": l.name(info.Server),
-		"method":  info.FullMethod,
+		"duration": time.Since(start),
 	})
-
-	ctx = log.SetContext(ctx, logger)
-
-	logger.Info("executing method start")
-	response, err := handler(ctx, req)
 
 	if err != nil {
 		logger.WithError(err).Error("executing method fail")
 		return nil, err
 	}
 
-	logger.Info("executing method finish")
+	logger.Info("executing method success")
 	return response, nil
 
 }
@@ -51,30 +54,43 @@ func (l *LogHandler) Stream(srv interface{}, stream grpc.ServerStream, info *grp
 		source = "client"
 	}
 
-	logger = logger.WithFields(log.Map{
-		"source":  source,
-		"handler": l.name(srv),
-		"method":  info.FullMethod,
-	})
+	fields := annotation(ctx)
+	fields["source"] = source
+	fields["method"] = info.FullMethod
 
-	logger.Info("streaming method start")
+	logger = logger.WithFields(fields)
 
 	stream = &ServerStream{
 		Ctx:    log.SetContext(ctx, logger),
 		Stream: stream,
 	}
 
+	start := time.Now()
 	err := handler(srv, stream)
 
+	logger = logger.WithFields(log.Map{
+		"duration": time.Since(start),
+	})
+
 	if err != nil {
-		logger.WithError(err).Error("streaming fail")
+		logger.WithError(err).Error("streaming method fail")
 		return err
 	}
 
-	logger.Info("streaming finish")
+	logger.Info("streaming method success")
 	return nil
 }
 
-func (l *LogHandler) name(srv interface{}) string {
-	return strings.TrimPrefix(fmt.Sprintf("%T", srv), "*")
+func annotation(ctx context.Context) log.Map {
+	fields := log.Map{}
+
+	if md, ok := metadata.FromIncomingContext(ctx); ok {
+		for k, v := range md {
+			if strings.HasPrefix(k, "x-plex") && len(v) > 0 {
+				fields[k] = v[0]
+			}
+		}
+	}
+
+	return fields
 }

@@ -76,4 +76,7 @@ var (
 	AllOutgoingHeaders = runtime.WithOutgoingHeaderMatcher(func(h string) (string, bool) {
 		return h, true
 	})
+
+	// ErrorHandler can be used to handle an error as general proto message defined by gRPC.
+	ErrorHandler = WithProtoErrorHandler(runtime.DefaultHTTPProtoErrorHandler)
 )

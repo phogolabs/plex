@@ -9,8 +9,8 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-// Recover is the recovery interceptor
-var Recover = &RecoveryHandler{}
+// Recoverer is the recovery interceptor
+var Recoverer = &RecoveryHandler{}
 
 // RecoveryHandlerFuncContext is a function that recovers from the panic `p` by returning an `error`.
 // The context can be used to extract request scoped metadata and context values.

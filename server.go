@@ -19,46 +19,27 @@ const (
 
 // Server represents a server
 type Server struct {
-	addr    string
-	grpcSrv *grpc.Server
-	httpSrv *http.Server
+	Addr    string
+	Gateway *grpc.Gateway
+	Proxy   *http.Proxy
 }
 
 // NewServer creates a new server
-func NewServer(opts ...ServerOption) *Server {
+func NewServer() *Server {
 	server := &Server{
-		addr:    ":3009",
-		grpcSrv: grpc.NewServer(),
-		httpSrv: http.NewServer(),
-	}
-
-	for _, opt := range opts {
-		opt.Apply(server)
+		Addr:    ":8080",
+		Gateway: grpc.NewGateway(),
+		Proxy:   http.NewProxy(),
 	}
 
 	return server
-}
-
-// Address returns the address
-func (srv *Server) Address() string {
-	return srv.addr
-}
-
-// Mux returns the http server
-func (srv *Server) Mux() *http.Server {
-	return srv.httpSrv
-}
-
-// Socket returns the grpc server
-func (srv *Server) Socket() *grpc.Server {
-	return srv.grpcSrv
 }
 
 // ListenAndServe listens on the TCP network address srv.Addr and then
 // calls Serve to handle requests on incoming connections.
 // Accepted connections are configured to enable TCP keep-alives.
 func (srv *Server) ListenAndServe() error {
-	listener, err := net.Listen("tcp", srv.addr)
+	listener, err := net.Listen("tcp", srv.Addr)
 	if err != nil {
 		return err
 	}
@@ -74,8 +55,8 @@ func (srv *Server) Serve(listener net.Listener) (err error) {
 		group = errgroup.Group{}
 	)
 
-	group.Go(func() error { return srv.grpcSrv.Serve(mux) })
-	group.Go(func() error { return srv.httpSrv.Serve(mux) })
+	group.Go(func() error { return srv.Gateway.Serve(mux) })
+	group.Go(func() error { return srv.Proxy.Serve(mux) })
 	group.Go(func() error { return mux.Serve() })
 
 	if err = group.Wait(); err != nil {
@@ -95,12 +76,16 @@ func (srv *Server) Serve(listener net.Listener) (err error) {
 
 // Shutdown shutdowns the server
 func (srv *Server) Shutdown(ctx context.Context) error {
-	if err := srv.httpSrv.Shutdown(ctx); err != nil {
-		return err
+	if proxy := srv.Proxy; proxy != nil {
+		if err := proxy.Shutdown(ctx); err != nil {
+			return err
+		}
 	}
 
-	if err := srv.grpcSrv.Shutdown(ctx); err != nil {
-		return err
+	if gateway := srv.Gateway; gateway != nil {
+		if err := gateway.Shutdown(ctx); err != nil {
+			return err
+		}
 	}
 
 	return nil

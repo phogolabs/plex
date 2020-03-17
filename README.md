@@ -21,11 +21,16 @@ import (
 
 func main() {
 	// create the plex server
-	server := plex.NewServer(
-		plex.WithAddress(":8080"),
-	)
+	server := plex.NewServer()
 
-	log.Infof("server is listening on %v for grpc or http", server.Address())
+	// register the http proxy
+	server.Proxy.Register(sdk.RegisterYourAPIHandler)
+
+	// register the server handler
+	sdk.RegisterYourAPIServer(server.Gateway.Server, handler)
+
+	log.Infof("server is listening on %v for grpc or http", server.Addr)
+
 	if err := server.ListenAndServe(); err != nil {
 		log.WithError(err).Error("server listen and serve failed")
 	}

@@ -6,6 +6,12 @@ import (
 	"google.golang.org/grpc"
 )
 
+// Interceptor represents a grpc interface
+type Interceptor interface {
+	Unary(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error)
+	Stream(srv interface{}, ss grpc.ServerStream, info *grpc.StreamServerInfo, handler grpc.StreamHandler) error
+}
+
 // ChainInterceptor creates a single interceptor out of a chain of many interceptors.
 //
 // Execution is done in left-to-right order, including passing of context.
