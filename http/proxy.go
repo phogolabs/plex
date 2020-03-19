@@ -26,6 +26,7 @@ type Proxy struct {
 	server   *http.Server
 	router   chi.Router
 	handlers []ProxyHandlerFunc
+	onError  runtime.ProtoErrorHandlerFunc
 }
 
 // NewProxy creates a new http proxy
@@ -40,23 +41,32 @@ func NewProxy(opts ...ServeMuxOption) *Proxy {
 	router.Use(middleware.StripSlashes)
 	router.Use(Forwarder)
 
-	// mux setup
-	opts = append(opts, AllIncomingHeaders)
-	opts = append(opts, AllOutgoingHeaders)
-	opts = append(opts, ErrorHandler)
-
-	return &Proxy{
-		mux:    runtime.NewServeMux(opts...),
-		router: router,
+	proxy := &Proxy{
+		router:  router,
+		onError: runtime.DefaultHTTPProtoErrorHandler,
 		server: &http.Server{
 			Handler: router,
 		},
 	}
+
+	// mux setup
+	opts = append(opts, AllIncomingHeaders)
+	opts = append(opts, AllOutgoingHeaders)
+	opts = append(opts, WithProtoErrorHandler(proxy.catch))
+
+	proxy.mux = runtime.NewServeMux(opts...)
+
+	return proxy
 }
 
 // Use registers the proxy handler
 func (proxy *Proxy) Use(fn ProxyHandlerFunc) {
 	proxy.handlers = append(proxy.handlers, fn)
+}
+
+// OnError handles response errors
+func (proxy *Proxy) OnError(fn runtime.ProtoErrorHandlerFunc) {
+	proxy.onError = fn
 }
 
 // Serve serves the mux
@@ -125,4 +135,10 @@ func (proxy *Proxy) attach() error {
 	}
 
 	return nil
+}
+
+func (proxy *Proxy) catch(ctx context.Context, mux *runtime.ServeMux, m runtime.Marshaler, w http.ResponseWriter, r *http.Request, err error) {
+	if proxy.onError != nil {
+		proxy.onError(ctx, mux, m, w, r, err)
+	}
 }

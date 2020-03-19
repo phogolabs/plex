@@ -17,6 +17,9 @@ const (
 	ErrClosedConn = flaw.ErrorConstant("use of closed network connection")
 )
 
+// OnErrorxHandler can be used to handle an error as general proto message defined by gRPC.
+var OnErrorxHandler = http.OnErrorxHandler
+
 // Server represents a server
 type Server struct {
 	Addr    string
