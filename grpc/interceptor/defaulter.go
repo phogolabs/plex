@@ -11,7 +11,7 @@ import (
 
 // Defaulter is the interceptor that sets the default values of each input and
 // output parameter
-var Defaulter = &ValidationHandler{}
+var Defaulter = &DefaultHandler{}
 
 // DefaultHandler represents a defaulter
 type DefaultHandler struct{}
