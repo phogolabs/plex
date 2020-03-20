@@ -2,6 +2,7 @@ package interceptor
 
 import (
 	"context"
+	"reflect"
 
 	"github.com/phogolabs/inflate"
 	"google.golang.org/grpc"
@@ -18,7 +19,7 @@ type DefaultHandler struct{}
 
 // Unary does unary validation
 func (l *DefaultHandler) Unary(ctx context.Context, input interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {
-	if input != nil {
+	if reflect.ValueOf(input).Kind() == reflect.Ptr {
 		if err := inflate.SetDefault(input); err != nil {
 			err = status.Error(codes.Internal, err.Error())
 			return nil, err
@@ -27,7 +28,7 @@ func (l *DefaultHandler) Unary(ctx context.Context, input interface{}, info *grp
 
 	output, err := handler(ctx, input)
 
-	if output != nil {
+	if reflect.ValueOf(output).Kind() == reflect.Ptr {
 		if err := inflate.SetDefault(output); err != nil {
 			err = status.Error(codes.Internal, err.Error())
 			return nil, err
