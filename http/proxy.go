@@ -71,7 +71,7 @@ func (proxy *Proxy) OnError(fn runtime.ProtoErrorHandlerFunc) {
 
 // Serve serves the mux
 func (proxy *Proxy) Serve(mux cmux.CMux) error {
-	listener := mux.Match(cmux.HTTP1Fast())
+	listener := mux.Match(cmux.HTTP1Fast("PATCH"))
 
 	if err := proxy.connect(listener.Addr()); err != nil {
 		return err
