@@ -1,4 +1,4 @@
-package http
+package responder
 
 import (
 	"context"
@@ -10,8 +10,8 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-// OnErrorxHandler can be used to handle an error as general proto message defined by gRPC.
-func OnErrorxHandler(ctx context.Context, mux *runtime.ServeMux, marshaler runtime.Marshaler, w http.ResponseWriter, r *http.Request, err error) {
+// ErrorxHandler can be used to handle an error as general proto message defined by gRPC.
+func ErrorxHandler(ctx context.Context, mux *runtime.ServeMux, marshaler runtime.Marshaler, w http.ResponseWriter, r *http.Request, err error) {
 	statusErr, ok := status.FromError(err)
 	if !ok {
 		statusErr = status.New(codes.Unknown, err.Error())
