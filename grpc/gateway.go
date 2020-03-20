@@ -23,6 +23,7 @@ func NewGateway() *Gateway {
 	chain := ChainInterceptor{
 		interceptor.Logger,
 		interceptor.Recoverer,
+		interceptor.Defaulter,
 		interceptor.Validator,
 	}
 
