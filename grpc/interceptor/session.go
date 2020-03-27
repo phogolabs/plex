@@ -47,7 +47,7 @@ func (h *SessionHandler) Stream(srv interface{}, stream grpc.ServerStream, info 
 	return handler(srv, stream)
 }
 
-func (h *SessionHandler) session(ctx context.Context) (*Token, error) {
+func (h *SessionHandler) session(ctx context.Context) (*meta.Token, error) {
 	unauth := status.Error(codes.Unauthenticated, "session is not established")
 
 	md, ok := metadata.FromIncomingContext(ctx)
@@ -67,7 +67,7 @@ func (h *SessionHandler) session(ctx context.Context) (*Token, error) {
 		),
 	)
 
-	token := &Token{}
+	token := &meta.Token{}
 	if err := decoder.Decode(token); err != nil {
 		return nil, unauth
 	}
