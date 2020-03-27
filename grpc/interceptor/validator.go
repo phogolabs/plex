@@ -13,10 +13,12 @@ import (
 var Validator = &ValidationHandler{}
 
 // ValidationHandler represents a logger
-type ValidationHandler struct{}
+type ValidationHandler struct {
+	Validator *validate.Validate
+}
 
 // Unary does unary validation
-func (l *ValidationHandler) Unary(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {
+func (h *ValidationHandler) Unary(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {
 	type Validator interface {
 		Validate() error
 	}
@@ -26,7 +28,7 @@ func (l *ValidationHandler) Unary(ctx context.Context, req interface{}, info *gr
 	if validator, ok := req.(Validator); ok {
 		err = validator.Validate()
 	} else {
-		err = validate.New().StructCtx(ctx, req)
+		err = h.validator().StructCtx(ctx, req)
 	}
 
 	if err != nil {
@@ -41,6 +43,14 @@ func (l *ValidationHandler) Unary(ctx context.Context, req interface{}, info *gr
 }
 
 // Stream does not validate the stream
-func (l *ValidationHandler) Stream(srv interface{}, stream grpc.ServerStream, info *grpc.StreamServerInfo, handler grpc.StreamHandler) error {
+func (h *ValidationHandler) Stream(srv interface{}, stream grpc.ServerStream, info *grpc.StreamServerInfo, handler grpc.StreamHandler) error {
 	return handler(srv, stream)
+}
+
+func (h *ValidationHandler) validator() *validate.Validate {
+	if h.Validator != nil {
+		return h.Validator
+	}
+
+	return validate.New()
 }

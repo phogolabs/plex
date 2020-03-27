@@ -22,12 +22,12 @@ type RecoveryHandler struct {
 }
 
 // Unary does unary logging
-func (l *RecoveryHandler) Unary(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (_ interface{}, err error) {
+func (h *RecoveryHandler) Unary(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (_ interface{}, err error) {
 	logger := log.GetContext(ctx)
 
 	defer func() {
 		if r := recover(); r != nil {
-			if err = l.recoverFrom(ctx, r); err != nil {
+			if err = h.recoverFrom(ctx, r); err != nil {
 				logger.WithError(err).Error("fatal error ocurred")
 			}
 		}
@@ -37,7 +37,7 @@ func (l *RecoveryHandler) Unary(ctx context.Context, req interface{}, info *grpc
 }
 
 // Stream does stream logging
-func (l *RecoveryHandler) Stream(srv interface{}, stream grpc.ServerStream, info *grpc.StreamServerInfo, handler grpc.StreamHandler) (err error) {
+func (h *RecoveryHandler) Stream(srv interface{}, stream grpc.ServerStream, info *grpc.StreamServerInfo, handler grpc.StreamHandler) (err error) {
 	var (
 		ctx    = stream.Context()
 		logger = log.GetContext(ctx)
@@ -45,7 +45,7 @@ func (l *RecoveryHandler) Stream(srv interface{}, stream grpc.ServerStream, info
 
 	defer func() {
 		if r := recover(); r != nil {
-			if err = l.recoverFrom(ctx, r); err != nil {
+			if err = h.recoverFrom(ctx, r); err != nil {
 				logger.WithError(err).Error("fatal error ocurred")
 			}
 		}
@@ -54,10 +54,10 @@ func (l *RecoveryHandler) Stream(srv interface{}, stream grpc.ServerStream, info
 	return handler(srv, stream)
 }
 
-func (l *RecoveryHandler) recoverFrom(ctx context.Context, p interface{}) error {
-	if l.Handler == nil {
+func (h *RecoveryHandler) recoverFrom(ctx context.Context, p interface{}) error {
+	if h.Handler == nil {
 		return status.Errorf(codes.Internal, "%s", p)
 	}
 
-	return l.Handler(ctx, p)
+	return h.Handler(ctx, p)
 }
