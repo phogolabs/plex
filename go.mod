@@ -5,6 +5,7 @@ go 1.13
 require (
 	github.com/go-chi/chi v4.0.3+incompatible
 	github.com/go-playground/validator/v10 v10.2.0
+	github.com/golang/protobuf v1.3.3
 	github.com/goware/errorx v0.0.0-20150526135951-6c5540545f5f
 	github.com/grpc-ecosystem/grpc-gateway v1.12.2
 	github.com/phogolabs/flaw v0.0.0-20200319092612-4cb341804f87
