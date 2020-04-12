@@ -55,7 +55,7 @@ func NewProxy(opts ...ServeMuxOption) *Proxy {
 	opts = append(opts, WithProtoErrorHandler(proxy.catch))
 
 	proxy.mux = runtime.NewServeMux(opts...)
-	runtime.SetHTTPBodyMarshaler(mux)
+	runtime.SetHTTPBodyMarshaler(proxy.mux)
 
 	return proxy
 }
