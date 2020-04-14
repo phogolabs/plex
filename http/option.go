@@ -64,6 +64,10 @@ var (
 	// match wins" behavior, where if multiple path patterns match a
 	// request path, the last one defined in the .proto file will be used.
 	WithLastMatchWins = runtime.WithLastMatchWins
+
+	// WithMarshaler returns a ServeMuxOption which associates inbound and outbound
+	// Marshalers to a MIME type in mux.
+	WithMarshaler = runtime.WithMarshalerOption
 )
 
 var (
