@@ -18,6 +18,11 @@ type TransformHandler struct {
 	Transformer *mold.Transformer
 }
 
+// Register adds a transformation with the given tag
+func (t *TransformerHandler) Register(tag string, fn mold.Func) {
+	t.Transformer.Register(tag, fn)
+}
+
 // Unary does unary validation
 func (h *TransformHandler) Unary(ctx context.Context, input interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {
 	// transform input
