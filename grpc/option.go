@@ -24,6 +24,7 @@ func WithDefault() GatewayOption {
 		interceptor.Logger,
 		interceptor.Recoverer,
 		interceptor.Defaulter,
+		interceptor.Transformer,
 		interceptor.Validator,
 	}
 
