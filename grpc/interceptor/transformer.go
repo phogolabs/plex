@@ -23,6 +23,13 @@ func (h *TransformHandler) Register(tag string, fn mold.Func) {
 	h.Transformer.Register(tag, fn)
 }
 
+// RegisterStruct registers a StructLevelFunc against a number of types.
+// Why does this exist? For structs for which you may not have access or rights to add tags too,
+// from other packages your using.
+func (h *TransformHandler) RegisterStruct(fn mold.StructLevelFunc, types ...interface{}) {
+	h.Transformer.RegisterStructLevel(fn, types...)
+}
+
 // Unary does unary validation
 func (h *TransformHandler) Unary(ctx context.Context, input interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {
 	// transform input
