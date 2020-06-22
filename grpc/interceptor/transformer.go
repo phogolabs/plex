@@ -29,6 +29,9 @@ func (h *TransformHandler) Unary(ctx context.Context, input interface{}, info *g
 
 	// execute handler
 	output, err := handler(ctx, input)
+	if err != nil {
+		return nil, err
+	}
 
 	// transform output
 	if output != nil {
