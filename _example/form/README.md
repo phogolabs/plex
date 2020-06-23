@@ -5,6 +5,15 @@ The client should provide the following headers in order the request to be serve
 - `Content-Type: application/x-www-form-urlencoded` that determines the format of the content send to the server
 - `Accept: application/json` that determines the format of the content that the client expect. If this header is missing the server will use the value of `Content-Type` header to serve the response. **We do not support `application/x-www-form-urlencoded` format in the response body**
 
+You will need to inject `form` tag for the request types that is going to be used in `application/x-www-form-urlencoded` format:
+
+```proto3
+message FooRequest {
+  // @inject_tag: validate:"required,gt=0" form:"name"
+  string name = 1;
+}
+```
+
 ### Example
 
 The form post request:
