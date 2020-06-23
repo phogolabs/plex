@@ -18,7 +18,10 @@ require (
 	go.opencensus.io v0.22.4 // indirect
 	golang.org/x/net v0.0.0-20200602114024-627f9648deb9 // indirect
 	golang.org/x/sync v0.0.0-20200317015054-43a5402ce75a
+	golang.org/x/sys v0.0.0-20200622214017-ed371f2e16b4 // indirect
 	golang.org/x/text v0.3.3 // indirect
-	google.golang.org/genproto v0.0.0-20200622133129-d0ee0c36e670
-	google.golang.org/grpc v1.29.1
+	google.golang.org/genproto v0.0.0-20200623002339-fbb79eadd5eb
+	google.golang.org/grpc v1.30.0
+	google.golang.org/grpc/examples v0.0.0-20200617041141-9a465503579e // indirect
+	google.golang.org/protobuf v1.24.0
 )

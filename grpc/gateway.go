@@ -36,7 +36,6 @@ func NewGateway(opts ...GatewayOption) *Gateway {
 
 // Serve serves the mux
 func (gateway *Gateway) Serve(mux cmux.CMux) error {
-	// listener := mux.Match(cmux.HTTP2HeaderField("content-type", ContentType))
 	listener := mux.MatchWithWriters(cmux.HTTP2MatchHeaderFieldSendSettings("content-type", ContentType))
 	return gateway.Server.Serve(listener)
 }

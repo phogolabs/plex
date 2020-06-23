@@ -52,8 +52,15 @@ func NewProxy(opts ...ServeMuxOption) *Proxy {
 	// mux setup
 	opts = append(opts, AllIncomingHeaders)
 	opts = append(opts, AllOutgoingHeaders)
-	opts = append(opts, WithProtoErrorHandler(proxy.catch))
 
+	// encoding
+	opts = append(opts, WithJSONMarshaler)
+	opts = append(opts, WithFormMarshaler)
+
+	// events
+	opts = append(opts, proxy.WithErrorHandler())
+
+	// setup the mux
 	proxy.mux = runtime.NewServeMux(opts...)
 
 	return proxy
@@ -71,7 +78,10 @@ func (proxy *Proxy) OnError(fn runtime.ProtoErrorHandlerFunc) {
 
 // Serve serves the mux
 func (proxy *Proxy) Serve(mux cmux.CMux) error {
-	listener := mux.Match(cmux.HTTP1Fast("PATCH"))
+	listener := mux.Match(
+		cmux.HTTP1HeaderField("content-type", "application/json"),
+		cmux.HTTP1HeaderField("content-type", "application/x-www-form-urlencoded"),
+	)
 
 	if err := proxy.connect(listener.Addr()); err != nil {
 		return err
@@ -137,8 +147,13 @@ func (proxy *Proxy) attach() error {
 	return nil
 }
 
-func (proxy *Proxy) catch(ctx context.Context, mux *runtime.ServeMux, m runtime.Marshaler, w http.ResponseWriter, r *http.Request, err error) {
-	if proxy.onError != nil {
-		proxy.onError(ctx, mux, m, w, r, err)
+// WithErrorHandler creates a error handler proxy
+func (proxy *Proxy) WithErrorHandler() runtime.ServeMuxOption {
+	fn := func(ctx context.Context, mux *runtime.ServeMux, m runtime.Marshaler, w http.ResponseWriter, r *http.Request, err error) {
+		if proxy.onError != nil {
+			proxy.onError(ctx, mux, m, w, r, err)
+		}
 	}
+
+	return runtime.WithProtoErrorHandler(fn)
 }
