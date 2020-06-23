@@ -1,8 +1,10 @@
 package http
 
 import (
+	"bufio"
 	"context"
 	"fmt"
+	"io"
 	"net"
 	"net/http"
 
@@ -78,10 +80,7 @@ func (proxy *Proxy) OnError(fn runtime.ProtoErrorHandlerFunc) {
 
 // Serve serves the mux
 func (proxy *Proxy) Serve(mux cmux.CMux) error {
-	listener := mux.Match(
-		cmux.HTTP1HeaderField("content-type", "application/json"),
-		cmux.HTTP1HeaderField("content-type", "application/x-www-form-urlencoded"),
-	)
+	listener := mux.Match(proxy.matcher)
 
 	if err := proxy.connect(listener.Addr()); err != nil {
 		return err
@@ -156,4 +155,17 @@ func (proxy *Proxy) WithErrorHandler() runtime.ServeMuxOption {
 	}
 
 	return runtime.WithProtoErrorHandler(fn)
+}
+
+func (proxy *Proxy) matcher(body io.Reader) bool {
+	r, err := http.ReadRequest(bufio.NewReader(body))
+	if err != nil {
+		return false
+	}
+
+	if value := r.Header.Get("content-type"); value != "application/grpc" {
+		return true
+	}
+
+	return false
 }
