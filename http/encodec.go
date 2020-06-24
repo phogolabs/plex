@@ -20,13 +20,6 @@ var (
 	WithJSONMarshaler = runtime.WithMarshalerOption(ContentTypeJSON, &runtime.JSONPb{OrigName: true})
 )
 
-const (
-	// ContentTypeForm is the form url encoded
-	ContentTypeForm = "application/x-www-form-urlencoded"
-	// ContentTypeJSON is the json encoded requests
-	ContentTypeJSON = "application/json"
-)
-
 // FormMarshaler defines a conversion between byte sequence and gRPC payloads / fields.
 type FormMarshaler struct{}
 
