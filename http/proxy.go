@@ -44,8 +44,8 @@ func NewProxy(opts ...ServeMuxOption) *Proxy {
 
 	// middleware extensions
 	router.Use(Accept)
-	router.Use(Metadata)
 	router.Use(ContentType)
+	router.Use(Metadata)
 
 	proxy := &Proxy{
 		router:  router,

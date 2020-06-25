@@ -56,7 +56,7 @@ func PrepareMediaType(name string, r *http.Request) {
 			// parse the media type
 			value, _, err := mime.ParseMediaType(item)
 			if err != nil {
-				logger.WithError(err).Infof("skip unsupoorted media type '%v'", item)
+				logger.WithError(err).Infof("skip unsupported media type '%v'", item)
 				continue
 			}
 
