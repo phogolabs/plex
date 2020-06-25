@@ -24,22 +24,28 @@ type Proxy struct {
 	mux      *runtime.ServeMux
 	conn     *grpc.ClientConn
 	server   *http.Server
-	router   chi.Router
 	handlers []ProxyHandlerFunc
 	onError  runtime.ProtoErrorHandlerFunc
+	router   chi.Router
 }
 
 // NewProxy creates a new http proxy
 func NewProxy(opts ...ServeMuxOption) *Proxy {
 	// router setup
 	router := chi.NewRouter()
+
+	// middleware by recommendation
 	router.Use(middleware.NoCache)
 	router.Use(middleware.RequestID)
 	router.Use(middleware.RealIP)
 	router.Use(middleware.Logger)
 	router.Use(middleware.Recoverer)
 	router.Use(middleware.StripSlashes)
-	router.Use(Forwarder)
+
+	// middleware extensions
+	router.Use(Accept)
+	router.Use(Metadata)
+	router.Use(ContentType)
 
 	proxy := &Proxy{
 		router:  router,

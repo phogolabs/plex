@@ -1,6 +1,8 @@
 package service
 
-import "github.com/phogolabs/plex"
+import (
+	"github.com/phogolabs/plex"
+)
 
 // New creates a new server
 func New() *plex.Server {
