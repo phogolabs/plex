@@ -38,7 +38,7 @@ func (h *ValidationHandler) Unary(ctx context.Context, req interface{}, info *gr
 
 	state, ok := status.FromError(err)
 	if !ok {
-		err = status.Error(codes.InvalidArgument, err.Error())
+		state = status.New(codes.InvalidArgument, err.Error())
 	}
 
 	switch errx := err.(type) {
@@ -57,6 +57,7 @@ func (h *ValidationHandler) Unary(ctx context.Context, req interface{}, info *gr
 		}
 
 		state, _ = state.WithDetails(badRequest)
+
 	}
 
 	return nil, state.Err()
