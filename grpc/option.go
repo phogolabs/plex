@@ -1,9 +1,19 @@
 package grpc
 
 import (
+	"time"
+
 	"github.com/phogolabs/plex/grpc/interceptor"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/keepalive"
 )
+
+// KeepaliveOption represents a keep alive option
+// For more information have a look:
+//   https://stackoverflow.com/questions/52993259/problem-with-grpc-setup-getting-an-intermittent-rpc-unavailable-error
+var KeepaliveOption = grpc.KeepaliveParams(keepalive.ServerParameters{
+	MaxConnectionIdle: 5 * time.Minute,
+})
 
 // GatewayOption represents a gateway option
 type GatewayOption interface {

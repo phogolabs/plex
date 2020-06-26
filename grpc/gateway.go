@@ -2,11 +2,9 @@ package grpc
 
 import (
 	"context"
-	"time"
 
 	"github.com/soheilhy/cmux"
 	"google.golang.org/grpc"
-	"google.golang.org/grpc/keepalive"
 )
 
 const (
@@ -28,11 +26,7 @@ func NewGateway(opts ...GatewayOption) *Gateway {
 
 	gateway := &Gateway{
 		Options: []grpc.ServerOption{
-			// For more information have a look:
-			//   https://stackoverflow.com/questions/52993259/problem-with-grpc-setup-getting-an-intermittent-rpc-unavailable-error
-			grpc.KeepaliveParams(keepalive.ServerParameters{
-				MaxConnectionIdle: 5 * time.Minute,
-			}),
+			KeepaliveOption,
 		},
 	}
 

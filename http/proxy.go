@@ -5,12 +5,14 @@ import (
 	"fmt"
 	"net"
 	"net/http"
+	"time"
 
 	"github.com/go-chi/chi"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	"github.com/phogolabs/restify/middleware"
 	"github.com/soheilhy/cmux"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/backoff"
 )
 
 // ServeMuxOption is an option that can be given to a ServeMux on construction.
@@ -121,7 +123,15 @@ func (proxy *Proxy) connect(addr net.Addr) error {
 		return err
 	}
 
-	proxy.conn, err = grpc.Dial(address, grpc.WithInsecure())
+	proxy.conn, err = grpc.Dial(address,
+		grpc.WithBlock(),
+		grpc.WithInsecure(),
+		grpc.WithConnectParams(grpc.ConnectParams{
+			MinConnectTimeout: 5 * time.Minute,
+			Backoff:           backoff.DefaultConfig,
+		}),
+	)
+
 	if err != nil {
 		return err
 	}
