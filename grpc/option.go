@@ -39,10 +39,8 @@ func WithDefault() GatewayOption {
 // WithChain  sets the interceptor chain
 func WithChain(chain ChainInterceptor) GatewayOption {
 	fn := func(gw *Gateway) {
-		gw.Server = grpc.NewServer(
-			grpc.UnaryInterceptor(chain.Unary),
-			grpc.StreamInterceptor(chain.Stream),
-		)
+		gw.Options = append(gw.Options, grpc.UnaryInterceptor(chain.Unary))
+		gw.Options = append(gw.Options, grpc.StreamInterceptor(chain.Stream))
 	}
 
 	return GatewayOptionFunc(fn)
