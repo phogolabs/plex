@@ -4,6 +4,8 @@ import (
 	"context"
 	"errors"
 	"net"
+	"runtime"
+	"time"
 
 	"github.com/phogolabs/flaw"
 	"github.com/phogolabs/plex/grpc"
@@ -50,13 +52,29 @@ func (srv *Server) ListenAndServe() error {
 // Serve accepts incoming connections on the Listener l, creating a
 // new service goroutine for each.
 func (srv *Server) Serve(listener net.Listener) (err error) {
+	sched := func() {
+		// schedule the routine
+		runtime.Gosched()
+		// wait for 500ms
+		time.Sleep(500 * time.Millisecond)
+	}
+
 	var (
 		mux   = cmux.New(listener)
 		group = errgroup.Group{}
 	)
 
+	// boot the grpc server
 	group.Go(func() error { return srv.Gateway.Serve(mux) })
+
+	// we have to delay the start of the proxy to give time to the gateway to wake up
+	sched()
+	// boot the proxy
 	group.Go(func() error { return srv.Proxy.Serve(mux) })
+
+	// we have to delay the start of the server
+	sched()
+	// boot the multiplexer
 	group.Go(func() error { return mux.Serve() })
 
 	if err = group.Wait(); err != nil {

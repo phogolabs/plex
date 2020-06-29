@@ -124,8 +124,8 @@ func (proxy *Proxy) connect(addr net.Addr) error {
 	}
 
 	proxy.conn, err = grpc.Dial(address,
-		grpc.WithBlock(),
 		grpc.WithInsecure(),
+		grpc.WithReturnConnectionError(),
 		grpc.WithConnectParams(grpc.ConnectParams{
 			MinConnectTimeout: 5 * time.Minute,
 			Backoff:           backoff.DefaultConfig,

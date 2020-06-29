@@ -7,11 +7,6 @@ import (
 	"google.golang.org/grpc"
 )
 
-const (
-	// ContentType is a grpc content-type
-	ContentType = "application/grpc"
-)
-
 // Gateway represents a grpc server
 type Gateway struct {
 	Server  *grpc.Server
@@ -40,10 +35,7 @@ func NewGateway(opts ...GatewayOption) *Gateway {
 
 // Serve serves the mux
 func (gateway *Gateway) Serve(mux cmux.CMux) error {
-	listener := mux.MatchWithWriters(
-		cmux.HTTP2MatchHeaderFieldSendSettings("content-type", ContentType),
-	)
-
+	listener := mux.MatchWithWriters(Match)
 	return gateway.Server.Serve(listener)
 }
 
