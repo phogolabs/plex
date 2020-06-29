@@ -4,7 +4,9 @@ go 1.13
 
 require (
 	github.com/go-chi/chi v4.1.2+incompatible
+	github.com/go-playground/locales v0.13.0
 	github.com/go-playground/mold v2.2.0+incompatible
+	github.com/go-playground/universal-translator v0.17.0
 	github.com/go-playground/validator/v10 v10.3.0
 	github.com/golang/groupcache v0.0.0-20200121045136-8c9f03a8e57e // indirect
 	github.com/golang/protobuf v1.4.2
@@ -23,5 +25,6 @@ require (
 	google.golang.org/genproto v0.0.0-20200623002339-fbb79eadd5eb
 	google.golang.org/grpc v1.30.0
 	google.golang.org/grpc/examples v0.0.0-20200617041141-9a465503579e // indirect
+	google.golang.org/protobuf v1.25.0
 	gopkg.in/yaml.v2 v2.2.5 // indirect
 )

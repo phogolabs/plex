@@ -22,3 +22,16 @@ func Get(ctx context.Context, key string) string {
 
 	return ""
 }
+
+// GetOrDefault returns the value for given key fromt he metadata
+func GetOrDefault(ctx context.Context, key, fallback string) string {
+	// get the value
+	value := Get(ctx, key)
+
+	// fallback if the value is empty
+	if value == "" {
+		value = fallback
+	}
+
+	return value
+}
