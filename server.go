@@ -19,11 +19,18 @@ const (
 	ErrClosedConn = flaw.ErrorConstant("use of closed network connection")
 )
 
+// ShutdownFunc represents a shutdown function
+type ShutdownFunc = func(context.Context) error
+
 // Server represents a server
 type Server struct {
-	Addr    string
+	// address
+	Addr string
+	// multplexers
 	Gateway *grpc.Gateway
 	Proxy   *http.Proxy
+	// events
+	OnShutdownChain []ShutdownFunc
 }
 
 // NewServer creates a new server
@@ -35,6 +42,11 @@ func NewServer() *Server {
 	}
 
 	return server
+}
+
+// OnShutdown register shutdown callback
+func (srv *Server) OnShutdown(fn ShutdownFunc) {
+	srv.OnShutdownChain = append(srv.OnShutdownChain, fn)
 }
 
 // ListenAndServe listens on the TCP network address srv.Addr and then
@@ -102,6 +114,12 @@ func (srv *Server) Shutdown(ctx context.Context) error {
 
 	if gateway := srv.Gateway; gateway != nil {
 		if err := gateway.Shutdown(ctx); err != nil {
+			return err
+		}
+	}
+
+	for _, shutdown := range srv.OnShutdownChain {
+		if err := shutdown(ctx); err != nil {
 			return err
 		}
 	}
