@@ -1,4 +1,4 @@
-package plex
+package grpc
 
 import (
 	"context"
@@ -8,6 +8,24 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/metadata"
 )
+
+// ToString convert to a string pointer from wrapper
+func ToString(value *wrappers.StringValue) *string {
+	if value != nil {
+		return &value.Value
+	}
+
+	return nil
+}
+
+// GetString converts to a string wrapper from a string pointer
+func GetString(value *string) *wrappers.StringValue {
+	if value != nil {
+		return &wrappers.StringValue{Value: *value}
+	}
+
+	return nil
+}
 
 // SetCookie adds a Set-Cookie header to the provided server transport context.
 // The provided cookie must have a valid Name. Invalid cookies may be
@@ -40,22 +58,4 @@ func CookieFromIncomingContext(ctx context.Context, name string) (*http.Cookie, 
 	}
 
 	return r.Cookie(name)
-}
-
-// ToString convert to a string pointer from wrapper
-func ToString(value *wrappers.StringValue) *string {
-	if value != nil {
-		return &value.Value
-	}
-
-	return nil
-}
-
-// GetString converts to a string wrapper from a string pointer
-func GetString(value *string) *wrappers.StringValue {
-	if value != nil {
-		return &wrappers.StringValue{Value: *value}
-	}
-
-	return nil
 }
