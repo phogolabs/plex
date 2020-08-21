@@ -11,6 +11,10 @@ import (
 // Tracer is the interceptor that sets the default values of each input and
 // output parameter
 func Tracer(next http.Handler) http.Handler {
+	type Flusher interface {
+		Flush()
+	}
+
 	provider := global.TraceProvider()
 
 	// tracer
@@ -26,6 +30,10 @@ func Tracer(next http.Handler) http.Handler {
 		)
 
 		handler.ServeHTTP(w, r)
+
+		if flusher, ok := provider.(Flusher); ok {
+			flusher.Flush()
+		}
 	}
 
 	return http.HandlerFunc(fn)

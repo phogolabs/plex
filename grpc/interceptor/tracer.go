@@ -19,6 +19,8 @@ type TraceHandler struct{}
 
 // Unary does unary validation
 func (h *TraceHandler) Unary(ctx context.Context, input interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {
+	defer h.flush()
+
 	var (
 		tracer = h.tracer()
 		exec   = grpcotel.UnaryServerInterceptor(tracer)
@@ -29,6 +31,8 @@ func (h *TraceHandler) Unary(ctx context.Context, input interface{}, info *grpc.
 
 // Stream does not validate the stream
 func (h *TraceHandler) Stream(srv interface{}, stream grpc.ServerStream, info *grpc.StreamServerInfo, handler grpc.StreamHandler) error {
+	defer h.flush()
+
 	var (
 		tracer = h.tracer()
 		exec   = grpcotel.StreamServerInterceptor(tracer)
@@ -47,4 +51,14 @@ func (h *TraceHandler) tracer() trace.Tracer {
 	)
 
 	return tracer
+}
+
+func (h *TraceHandler) flush() {
+	type Flusher interface {
+		Flush()
+	}
+
+	if flusher, ok := global.TraceProvider().(Flusher); ok {
+		flusher.Flush()
+	}
 }
