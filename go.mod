@@ -18,6 +18,9 @@ require (
 	github.com/phogolabs/restify v0.0.0-20200430115140-08e5c0f200ed
 	github.com/soheilhy/cmux v0.1.4
 	go.opencensus.io v0.22.4 // indirect
+	go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc v0.10.1
+	go.opentelemetry.io/contrib/instrumentation/net/http v0.10.1
+	go.opentelemetry.io/otel v0.10.0
 	golang.org/x/net v0.0.0-20200813134508-3edf25e44fcc // indirect
 	golang.org/x/sync v0.0.0-20200625203802-6e8e738ad208
 	golang.org/x/sys v0.0.0-20200812155832-6a926be9bd1d // indirect

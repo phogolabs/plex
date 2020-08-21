@@ -11,6 +11,9 @@ import (
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	"github.com/phogolabs/restify/middleware"
 	"github.com/soheilhy/cmux"
+	grpcotel "go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc"
+	"go.opentelemetry.io/otel/api/global"
+	"go.opentelemetry.io/otel/api/trace"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/backoff"
 )
@@ -123,13 +126,26 @@ func (proxy *Proxy) connect(addr net.Addr) error {
 		return err
 	}
 
+	params := grpc.ConnectParams{
+		MinConnectTimeout: 5 * time.Minute,
+		Backoff:           backoff.DefaultConfig,
+	}
+
+	var (
+		provider = global.TraceProvider()
+		tracer   = provider.Tracer(
+			"github.com/phogolabs/plex/http",
+			trace.WithInstrumentationVersion("0.1"))
+		tracerUnary  = grpcotel.UnaryClientInterceptor(tracer)
+		tracerStream = grpcotel.StreamClientInterceptor(tracer)
+	)
+
 	proxy.conn, err = grpc.Dial(address,
 		grpc.WithInsecure(),
 		grpc.WithReturnConnectionError(),
-		grpc.WithConnectParams(grpc.ConnectParams{
-			MinConnectTimeout: 5 * time.Minute,
-			Backoff:           backoff.DefaultConfig,
-		}),
+		grpc.WithConnectParams(params),
+		grpc.WithUnaryInterceptor(tracerUnary),
+		grpc.WithStreamInterceptor(tracerStream),
 	)
 
 	if err != nil {
