@@ -14,10 +14,9 @@ require (
 	github.com/grpc-ecosystem/grpc-gateway v1.14.7
 	github.com/phogolabs/flaw v0.0.0-20200805120211-08c4133e43e8
 	github.com/phogolabs/inflate v0.0.0-20200311164934-99bf1dd99c03
-	github.com/phogolabs/log v0.0.0-20200822105608-413d5f999899
-	github.com/phogolabs/restify v0.0.0-20200430115140-08e5c0f200ed
+	github.com/phogolabs/log v0.0.0-20200822122537-c5427662104a
+	github.com/phogolabs/restify v0.0.0-20200822122639-b7d2a0bfc666
 	github.com/soheilhy/cmux v0.1.4
-	go.opencensus.io v0.22.4 // indirect
 	go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc v0.10.1
 	go.opentelemetry.io/contrib/instrumentation/net/http v0.10.1
 	go.opentelemetry.io/otel v0.10.0
