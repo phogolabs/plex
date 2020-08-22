@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/phogolabs/log"
+	"go.opentelemetry.io/otel/api/trace"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/metadata"
 )
@@ -90,6 +91,15 @@ func annotation(ctx context.Context) log.Map {
 				fields[k] = v[0]
 			}
 		}
+	}
+
+	traceID := trace.
+		SpanFromContext(ctx).
+		SpanContext().
+		TraceID
+
+	if len(traceID) > 0 {
+		fields["trace_id"] = traceID
 	}
 
 	return fields

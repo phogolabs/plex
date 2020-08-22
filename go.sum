@@ -11,7 +11,7 @@ github.com/aphistic/golf v0.0.0-20180712155816-02c07f170c5a/go.mod h1:3NqKYiepwy
 github.com/aphistic/sweet v0.2.0/go.mod h1:fWDlIh/isSE9n6EPsRmC0det+whmX6dJid3stzu0Xys=
 github.com/aws/aws-sdk-go v1.20.6/go.mod h1:KmX6BPdI08NWTb3/sm4ZGu5ShLoqVDhKgpiN924inxo=
 github.com/aws/aws-sdk-go v1.25.43/go.mod h1:KmX6BPdI08NWTb3/sm4ZGu5ShLoqVDhKgpiN924inxo=
-github.com/aws/aws-sdk-go v1.33.19/go.mod h1:5zCpMtNQVjRREroY7sYe8lOMRSxkhG6MZveU8YkpAk0=
+github.com/aws/aws-sdk-go v1.34.9/go.mod h1:5zCpMtNQVjRREroY7sYe8lOMRSxkhG6MZveU8YkpAk0=
 github.com/aybabtme/rgbterm v0.0.0-20170906152045-cc83f3b3ce59/go.mod h1:q/89r3U2H7sSsE2t6Kca0lfwTK8JdoNGS/yzM/4iH5I=
 github.com/census-instrumentation/opencensus-proto v0.2.1/go.mod h1:f6KPmirojxKA12rnyqOA5BBL4O983OfeGPqjHWSTneU=
 github.com/client9/misspell v0.3.4/go.mod h1:qj6jICC3Q7zFZvVWo7KLAzC3yx5G7kyvSDkc90ppPyw=
@@ -163,8 +163,8 @@ github.com/phogolabs/inflate v0.0.0-20191211151453-890681b29b83/go.mod h1:ePC3v2
 github.com/phogolabs/inflate v0.0.0-20200311164934-99bf1dd99c03 h1:JTdPwh5r84miIYBFOAff/UTJs1Xu1cQfd/XfewlTKWk=
 github.com/phogolabs/inflate v0.0.0-20200311164934-99bf1dd99c03/go.mod h1:ePC3v2xNOpWnDr6y5pmk09TCW4JYD2vYCDruOclMBOg=
 github.com/phogolabs/log v0.0.0-20191127172145-f737d8658073/go.mod h1:j2gwPB/JQT4EvaZfWJ6jr9gIOc/Ka7hWVKqP+zzKYrE=
-github.com/phogolabs/log v0.0.0-20200805120104-5f4f00f52da5 h1:2HA3GOMjA41cLKpX3RbYE6CXCj1+3PSyvHkINbttTPU=
-github.com/phogolabs/log v0.0.0-20200805120104-5f4f00f52da5/go.mod h1:UBS/8OFFiutQfdvYuxdIkASE4rl/HF99TELmZbjvLoc=
+github.com/phogolabs/log v0.0.0-20200822105608-413d5f999899 h1:8s3sy5wRTCJKYpsLyfj1Z53iHF6UYw3ZQvb6JCD6tAM=
+github.com/phogolabs/log v0.0.0-20200822105608-413d5f999899/go.mod h1:XekTMKadLFWy7fNUk+7NVbSIXyxsh80tRI2d4wVJ6RM=
 github.com/phogolabs/restify v0.0.0-20200430115140-08e5c0f200ed h1:lOxv63OMJfMZWMp8AKNvDMCOpvCZJNTc+Z0EEXbOq+k=
 github.com/phogolabs/restify v0.0.0-20200430115140-08e5c0f200ed/go.mod h1:Eam1CSAYSqSUdxV4WvO2hUxQzAOti83VXEjSOZP+0bw=
 github.com/phogolabs/schema v0.0.0-20190406105649-68a93910a72e h1:tuly/nIhZHuqvv0n9puLtMQ/5zv8DJ6m060w02GKHW8=

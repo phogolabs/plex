@@ -14,7 +14,7 @@ require (
 	github.com/grpc-ecosystem/grpc-gateway v1.14.7
 	github.com/phogolabs/flaw v0.0.0-20200805120211-08c4133e43e8
 	github.com/phogolabs/inflate v0.0.0-20200311164934-99bf1dd99c03
-	github.com/phogolabs/log v0.0.0-20200805120104-5f4f00f52da5
+	github.com/phogolabs/log v0.0.0-20200822105608-413d5f999899
 	github.com/phogolabs/restify v0.0.0-20200430115140-08e5c0f200ed
 	github.com/soheilhy/cmux v0.1.4
 	go.opencensus.io v0.22.4 // indirect
