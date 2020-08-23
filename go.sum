@@ -218,12 +218,10 @@ github.com/phogolabs/inflate v0.0.0-20191211151453-890681b29b83 h1:2fuUseYoi25UQ
 github.com/phogolabs/inflate v0.0.0-20191211151453-890681b29b83/go.mod h1:ePC3v2xNOpWnDr6y5pmk09TCW4JYD2vYCDruOclMBOg=
 github.com/phogolabs/inflate v0.0.0-20200311164934-99bf1dd99c03 h1:JTdPwh5r84miIYBFOAff/UTJs1Xu1cQfd/XfewlTKWk=
 github.com/phogolabs/inflate v0.0.0-20200311164934-99bf1dd99c03/go.mod h1:ePC3v2xNOpWnDr6y5pmk09TCW4JYD2vYCDruOclMBOg=
-github.com/phogolabs/log v0.0.0-20200822122537-c5427662104a h1:uwSFLp/d85TkBSTmtyggRnjeTt3MpnrWPc1D/TUYUFU=
-github.com/phogolabs/log v0.0.0-20200822122537-c5427662104a/go.mod h1:XekTMKadLFWy7fNUk+7NVbSIXyxsh80tRI2d4wVJ6RM=
 github.com/phogolabs/log v0.0.0-20200822155741-ef1d74433056 h1:n6lxrMt0Tpv+f52UlS2vAka/rhR0za5cNNukpx8FdW8=
 github.com/phogolabs/log v0.0.0-20200822155741-ef1d74433056/go.mod h1:JxyZGpNU8O01CVz21SrOi6ZRUWg/3YfgKs+AQTE9pYw=
-github.com/phogolabs/restify v0.0.0-20200822122639-b7d2a0bfc666 h1:cuYEIZX6wULjHgD0heDeZNC++aXsAIC2m2wRMR9oMsw=
-github.com/phogolabs/restify v0.0.0-20200822122639-b7d2a0bfc666/go.mod h1:voOrpnmvnZXsGdM3fZ1EUgdlbI7urIsU4gdspHdkESw=
+github.com/phogolabs/restify v0.0.0-20200822191639-39d6b06f9c6e h1:o0uGGIE2823pWIi3/EpXTZfVIB+148kVEjik9qVwvvc=
+github.com/phogolabs/restify v0.0.0-20200822191639-39d6b06f9c6e/go.mod h1:X+ONJWTnFuENYv85uD5gc3JW2n8ervVyaYBvLAx/SYs=
 github.com/phogolabs/schema v0.0.0-20190406105649-68a93910a72e h1:tuly/nIhZHuqvv0n9puLtMQ/5zv8DJ6m060w02GKHW8=
 github.com/phogolabs/schema v0.0.0-20190406105649-68a93910a72e/go.mod h1:ea0tRhas4e4ozZ1FcDdJiKKLivneEtPyrSdpvbHUuLs=
 github.com/pkg/errors v0.8.0/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINEl0=
@@ -397,8 +395,6 @@ golang.org/x/sys v0.0.0-20200515095857-1151b9dac4a9/go.mod h1:h1NjWce9XRLGQEsW7w
 golang.org/x/sys v0.0.0-20200519105757-fe76b779f299/go.mod h1:h1NjWce9XRLGQEsW7wpKNCjG9DtNlClVuFLEZdDNbEs=
 golang.org/x/sys v0.0.0-20200523222454-059865788121/go.mod h1:h1NjWce9XRLGQEsW7wpKNCjG9DtNlClVuFLEZdDNbEs=
 golang.org/x/sys v0.0.0-20200615200032-f1bc736245b1/go.mod h1:h1NjWce9XRLGQEsW7wpKNCjG9DtNlClVuFLEZdDNbEs=
-golang.org/x/sys v0.0.0-20200620081246-981b61492c35 h1:wb/9mP8eUAmHfkM8RmpeLq6nUA7c2i5+bQOtcDftjaE=
-golang.org/x/sys v0.0.0-20200620081246-981b61492c35/go.mod h1:h1NjWce9XRLGQEsW7wpKNCjG9DtNlClVuFLEZdDNbEs=
 golang.org/x/sys v0.0.0-20200803210538-64077c9b5642/go.mod h1:h1NjWce9XRLGQEsW7wpKNCjG9DtNlClVuFLEZdDNbEs=
 golang.org/x/sys v0.0.0-20200812155832-6a926be9bd1d h1:QQrM/CCYEzTs91GZylDCQjGHudbPTxF/1fvXdVh5lMo=
 golang.org/x/sys v0.0.0-20200812155832-6a926be9bd1d/go.mod h1:h1NjWce9XRLGQEsW7wpKNCjG9DtNlClVuFLEZdDNbEs=
@@ -510,7 +506,6 @@ google.golang.org/genproto v0.0.0-20200513103714-09dca8ec2884/go.mod h1:55QSHmfG
 google.golang.org/genproto v0.0.0-20200515170657-fc4c6c6a6587/go.mod h1:YsZOwe1myG/8QRHRsmBRE1LrgQY60beZKjly0O1fX9U=
 google.golang.org/genproto v0.0.0-20200526211855-cb27e3aa2013/go.mod h1:NbSheEEYHJ7i3ixzK3sjbqSGDJWnxyFXZblF3eUsNvo=
 google.golang.org/genproto v0.0.0-20200618031413-b414f8b61790/go.mod h1:jDfRM7FcilCzHH/e9qn6dsT145K34l5v+OpcnNgKAAA=
-google.golang.org/genproto v0.0.0-20200620020550-bd6e04640131/go.mod h1:jDfRM7FcilCzHH/e9qn6dsT145K34l5v+OpcnNgKAAA=
 google.golang.org/genproto v0.0.0-20200702021140-07506425bd67/go.mod h1:FWY/as6DDZQgahTzZj3fqbO1CbirC29ZNUFHwi0/+no=
 google.golang.org/genproto v0.0.0-20200729003335-053ba62fc06f/go.mod h1:FWY/as6DDZQgahTzZj3fqbO1CbirC29ZNUFHwi0/+no=
 google.golang.org/genproto v0.0.0-20200804131852-c06518451d9c/go.mod h1:FWY/as6DDZQgahTzZj3fqbO1CbirC29ZNUFHwi0/+no=
