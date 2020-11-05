@@ -12,6 +12,10 @@ import (
 func New() *plex.Server {
 	// create the plex server
 	server := plex.NewServer()
+
+	server.Proxy.UseDialOption(interceptor.ClientUnaryTracer)
+	server.Proxy.UseDialOption(interceptor.ClientStreamTracer)
+
 	server.Proxy.OnError(responder.PostgreSQLErrorFormatter)
 	server.Proxy.Router().Use(middleware.Tracer)
 

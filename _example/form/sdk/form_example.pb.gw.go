@@ -68,6 +68,7 @@ func local_request_FooAPI_Post_0(ctx context.Context, marshaler runtime.Marshale
 // RegisterFooAPIHandlerServer registers the http handlers for service FooAPI to "mux".
 // UnaryRPC     :call FooAPIServer directly.
 // StreamingRPC :currently unsupported pending https://github.com/grpc/grpc-go/issues/906.
+// Note that using this registration option will cause many gRPC library features (such as grpc.SendHeader, etc) to stop working. Consider using RegisterFooAPIHandlerFromEndpoint instead.
 func RegisterFooAPIHandlerServer(ctx context.Context, mux *runtime.ServeMux, server FooAPIServer) error {
 
 	mux.Handle("POST", pattern_FooAPI_Post_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {

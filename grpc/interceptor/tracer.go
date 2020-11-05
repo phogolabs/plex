@@ -8,6 +8,16 @@ import (
 	"google.golang.org/grpc"
 )
 
+var (
+	// ClientUnaryTracer intercepts client unary connections
+	ClientUnaryTracer = grpc.WithUnaryInterceptor(
+		otelgrpc.UnaryClientInterceptor())
+
+	// ClientStreamTracer intercepts client stream connections
+	ClientStreamTracer = grpc.WithStreamInterceptor(
+		otelgrpc.StreamClientInterceptor())
+)
+
 // Tracer is the interceptor that sets the default values of each input and
 // output parameter
 var Tracer = &TraceHandler{}

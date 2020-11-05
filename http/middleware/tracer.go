@@ -28,3 +28,5 @@ func Tracer(next http.Handler) http.Handler {
 
 	return http.HandlerFunc(fn)
 }
+
+// type UnaryClientInterceptor func(ctx context.Context, method string, req, reply interface{}, cc *ClientConn, invoker UnaryInvoker, opts ...CallOption) error

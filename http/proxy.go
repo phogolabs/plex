@@ -11,7 +11,6 @@ import (
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	"github.com/phogolabs/restify/middleware"
 	"github.com/soheilhy/cmux"
-	"go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/backoff"
 )
@@ -28,6 +27,7 @@ type Proxy struct {
 	conn     *grpc.ClientConn
 	server   *http.Server
 	handlers []ProxyHandlerFunc
+	opts     []grpc.DialOption
 	onError  runtime.ProtoErrorHandlerFunc
 	router   chi.Router
 }
@@ -80,6 +80,11 @@ func (proxy *Proxy) Use(fn ProxyHandlerFunc) {
 	proxy.handlers = append(proxy.handlers, fn)
 }
 
+// UseDialOption uses specific dial option
+func (proxy *Proxy) UseDialOption(opt grpc.DialOption) {
+	proxy.opts = append(proxy.opts, opt)
+}
+
 // OnError handles response errors
 func (proxy *Proxy) OnError(fn runtime.ProtoErrorHandlerFunc) {
 	proxy.onError = fn
@@ -129,20 +134,12 @@ func (proxy *Proxy) connect(addr net.Addr) error {
 		Backoff:           backoff.DefaultConfig,
 	}
 
-	var (
-		tracerUnary  = otelgrpc.UnaryClientInterceptor()
-		tracerStream = otelgrpc.StreamClientInterceptor()
-	)
+	opts := proxy.opts
+	opts = append(opts, grpc.WithInsecure())
+	opts = append(opts, grpc.WithReturnConnectionError())
+	opts = append(opts, grpc.WithConnectParams(params))
 
-	proxy.conn, err = grpc.Dial(address,
-		grpc.WithInsecure(),
-		grpc.WithReturnConnectionError(),
-		grpc.WithConnectParams(params),
-		grpc.WithUnaryInterceptor(tracerUnary),
-		grpc.WithStreamInterceptor(tracerStream),
-	)
-
-	if err != nil {
+	if proxy.conn, err = grpc.Dial(address, opts...); err != nil {
 		return err
 	}
 
