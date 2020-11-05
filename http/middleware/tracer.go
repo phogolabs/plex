@@ -3,9 +3,8 @@ package middleware
 import (
 	"net/http"
 
-	httpie "go.opentelemetry.io/contrib/instrumentation/net/http"
+	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
 	"go.opentelemetry.io/otel/api/global"
-	"go.opentelemetry.io/otel/api/trace"
 )
 
 // Tracer is the interceptor that sets the default values of each input and
@@ -15,20 +14,11 @@ func Tracer(next http.Handler) http.Handler {
 		Flush()
 	}
 
-	provider := global.TraceProvider()
-
-	// tracer
-	tracer := provider.Tracer(
-		"github.com/phogolabs/plex/http",
-		trace.WithInstrumentationVersion("0.1"))
+	provider := global.TracerProvider()
 
 	fn := func(w http.ResponseWriter, r *http.Request) {
 		// wrap the handler
-		handler := httpie.NewHandler(
-			next, r.URL.Path,
-			httpie.WithTracer(tracer),
-		)
-
+		handler := otelhttp.NewHandler(next, r.URL.Path)
 		handler.ServeHTTP(w, r)
 
 		if flusher, ok := provider.(Flusher); ok {
