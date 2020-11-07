@@ -30,7 +30,7 @@ func (h *LogHandler) Unary(ctx context.Context, req interface{}, info *grpc.Unar
 	response, err := handler(ctx, req)
 
 	logger = logger.WithFields(log.Map{
-		"duration": time.Since(start),
+		"duration": time.Since(start).String(),
 	})
 
 	if err != nil {
@@ -70,7 +70,7 @@ func (h *LogHandler) Stream(srv interface{}, stream grpc.ServerStream, info *grp
 	err := handler(srv, stream)
 
 	logger = logger.WithFields(log.Map{
-		"duration": time.Since(start),
+		"duration": time.Since(start).String(),
 	})
 
 	if err != nil {
