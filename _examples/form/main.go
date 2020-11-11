@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/phogolabs/log"
-	"github.com/phogolabs/plex/_example/form/service"
+	"github.com/phogolabs/plex/_examples/form/service"
 	"github.com/phogolabs/plex/grpc"
 	"github.com/phogolabs/plex/http"
 	"go.opentelemetry.io/otel/exporters/stdout"

@@ -4,7 +4,7 @@ package foo.bar.sdk;
 
 import "google/api/annotations.proto";
 
-option go_package = "github.com/phogolabs/plex/_example/form/sdk;sdk";
+option go_package = "github.com/phogolabs/plex/_examples/form/sdk;sdk";
 
 // FooAPI represents the Foo API server
 service FooAPI {

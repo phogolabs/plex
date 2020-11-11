@@ -1,6 +1,6 @@
 module github.com/phogolabs/plex
 
-go 1.13
+go 1.15
 
 require (
 	github.com/go-chi/chi v4.1.2+incompatible
@@ -10,21 +10,20 @@ require (
 	github.com/go-playground/validator/v10 v10.4.1
 	github.com/golang/protobuf v1.4.3
 	github.com/goware/errorx v0.0.0-20150526135951-6c5540545f5f
-	github.com/grpc-ecosystem/grpc-gateway v1.16.0
-	github.com/phogolabs/flaw v0.0.0-20200822061332-36460da02916
+	github.com/grpc-ecosystem/grpc-gateway/v2 v2.0.1
+	github.com/phogolabs/flaw v0.0.0-20201111183117-182b92e71790
 	github.com/phogolabs/inflate v0.0.0-20200311164934-99bf1dd99c03
-	github.com/phogolabs/log v0.0.0-20200822155741-ef1d74433056
-	github.com/phogolabs/restify v0.0.0-20201107090300-74574ae528a4
+	github.com/phogolabs/log v0.0.0-20201111184021-532c7331555a
+	github.com/phogolabs/restify v0.0.0-20201111184233-bf47ac68f945
 	github.com/soheilhy/cmux v0.1.4
 	go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc v0.13.0
 	go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.13.0
 	go.opentelemetry.io/otel v0.13.0
+	go.opentelemetry.io/otel/exporters/stdout v0.13.0
 	golang.org/x/crypto v0.0.0-20201016220609-9e8e0b390897 // indirect
-	golang.org/x/net v0.0.0-20201031054903-ff519b6c9102 // indirect
 	golang.org/x/sync v0.0.0-20201020160332-67f06af15bc9
-	golang.org/x/sys v0.0.0-20201101102859-da207088b7d1 // indirect
-	golang.org/x/text v0.3.4 // indirect
-	google.golang.org/grpc v1.33.1
-	google.golang.org/grpc/examples v0.0.0-20200617041141-9a465503579e // indirect
+	google.golang.org/genproto v0.0.0-20201111145450-ac7456db90a6
+	google.golang.org/grpc v1.33.2
+	google.golang.org/grpc/examples v0.0.0-20201111181252-28c130fe3d7e // indirect
 	google.golang.org/protobuf v1.25.0
 )

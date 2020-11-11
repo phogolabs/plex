@@ -5,7 +5,7 @@ import (
 	"fmt"
 
 	"github.com/phogolabs/plex"
-	"github.com/phogolabs/plex/_example/form/sdk"
+	"github.com/phogolabs/plex/_examples/form/sdk"
 )
 
 // FooHandler represents a handler

@@ -8,7 +8,7 @@ import (
 	"time"
 
 	"github.com/go-chi/chi"
-	"github.com/grpc-ecosystem/grpc-gateway/runtime"
+	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"github.com/phogolabs/restify/middleware"
 	"github.com/soheilhy/cmux"
 	"google.golang.org/grpc"
@@ -28,7 +28,7 @@ type Proxy struct {
 	server   *http.Server
 	handlers []ProxyHandlerFunc
 	opts     []grpc.DialOption
-	onError  runtime.ProtoErrorHandlerFunc
+	onError  runtime.ErrorHandlerFunc
 	router   chi.Router
 }
 
@@ -52,7 +52,7 @@ func NewProxy(opts ...ServeMuxOption) *Proxy {
 
 	proxy := &Proxy{
 		router:  router,
-		onError: runtime.DefaultHTTPProtoErrorHandler,
+		onError: runtime.DefaultHTTPErrorHandler,
 		server: &http.Server{
 			Handler: router,
 		},
@@ -86,7 +86,7 @@ func (proxy *Proxy) UseDialOption(opt grpc.DialOption) {
 }
 
 // OnError handles response errors
-func (proxy *Proxy) OnError(fn runtime.ProtoErrorHandlerFunc) {
+func (proxy *Proxy) OnError(fn runtime.ErrorHandlerFunc) {
 	proxy.onError = fn
 }
 
@@ -175,5 +175,5 @@ func (proxy *Proxy) WithErrorHandler() runtime.ServeMuxOption {
 		}
 	}
 
-	return runtime.WithProtoErrorHandler(fn)
+	return runtime.WithErrorHandler(fn)
 }

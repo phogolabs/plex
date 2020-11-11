@@ -6,18 +6,26 @@ import (
 	"io/ioutil"
 	"net/url"
 
-	"github.com/grpc-ecosystem/grpc-gateway/runtime"
+	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"github.com/phogolabs/inflate"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+	"google.golang.org/protobuf/encoding/protojson"
 )
 
 var (
 	// WithFormMarshaler allows marshaling application/x-www-form-urlencoded requests
-	WithFormMarshaler = runtime.WithMarshalerOption(ContentTypeForm, &FormMarshaler{})
+	WithFormMarshaler = runtime.WithMarshalerOption(ContentTypeForm,
+		&FormMarshaler{},
+	)
 
 	// WithJSONMarshaler allows marshaling application/x-www-form-urlencoded requests
-	WithJSONMarshaler = runtime.WithMarshalerOption(ContentTypeJSON, &runtime.JSONPb{OrigName: true})
+	WithJSONMarshaler = runtime.WithMarshalerOption(ContentTypeJSON,
+		&runtime.JSONPb{
+			MarshalOptions: protojson.MarshalOptions{
+				UseProtoNames: true,
+			},
+		})
 )
 
 // FormMarshaler defines a conversion between byte sequence and gRPC payloads / fields.
@@ -46,7 +54,7 @@ func (m *FormMarshaler) NewEncoder(w io.Writer) runtime.Encoder {
 }
 
 // ContentType returns the Content-Type which this marshaler is responsible for.
-func (m *FormMarshaler) ContentType() string {
+func (m *FormMarshaler) ContentType(_ interface{}) string {
 	return ContentTypeForm
 }
 

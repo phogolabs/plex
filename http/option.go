@@ -1,15 +1,15 @@
 package http
 
 import (
-	"github.com/grpc-ecosystem/grpc-gateway/runtime"
+	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 )
 
 type (
 	// HeaderMatcherFunc checks whether a header key should be forwarded to/from gRPC context.
 	HeaderMatcherFunc = runtime.HeaderMatcherFunc
 
-	// ProtoErrorHandlerFunc handles the error as a gRPC error generated via status package and replies to the request.
-	ProtoErrorHandlerFunc = runtime.ProtoErrorHandlerFunc
+	// ErrorHandlerFunc handles the error as a gRPC error generated via status package and replies to the request.
+	ErrorHandlerFunc = runtime.ErrorHandlerFunc
 )
 
 var (
@@ -40,12 +40,12 @@ var (
 	// is reading token from cookie and adding it in gRPC context.
 	WithMetadata = runtime.WithMetadata
 
-	// WithProtoErrorHandler returns a ServeMuxOption for passing metadata to a gRPC context.
+	// WithErrorHandler returns a ServeMuxOption for passing metadata to a gRPC context.
 	//
 	// This can be used to handle an error as general proto message defined by gRPC.
 	// The response including body and status is not backward compatible with the default error handler.
 	// When this option is used, HTTPError and OtherErrorHandler are overwritten on initialization.
-	WithProtoErrorHandler = runtime.WithProtoErrorHandler
+	WithErrorHandler = runtime.WithErrorHandler
 
 	// WithDisablePathLengthFallback returns a ServeMuxOption for disable path length fallback.
 	WithDisablePathLengthFallback = runtime.WithDisablePathLengthFallback
@@ -59,11 +59,6 @@ var (
 	// be handled differently: they must be included in the response body. The response body's
 	// final message will include the error details returned by the stream error handler.
 	WithStreamErrorHandler = runtime.WithStreamErrorHandler
-
-	// WithLastMatchWins returns a ServeMuxOption that will enable "last
-	// match wins" behavior, where if multiple path patterns match a
-	// request path, the last one defined in the .proto file will be used.
-	WithLastMatchWins = runtime.WithLastMatchWins
 
 	// WithMarshaler returns a ServeMuxOption which associates inbound and outbound
 	// Marshalers to a MIME type in mux.
