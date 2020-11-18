@@ -10,11 +10,11 @@ import (
 	validate "github.com/go-playground/validator/v10"
 	validateEn "github.com/go-playground/validator/v10/translations/en"
 
+	"google.golang.org/genproto/googleapis/rpc/errdetails"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
-	"google.golang.org/protobuf/types/known/structpb"
 )
 
 // Validatable represents a validatable type
@@ -72,39 +72,42 @@ func (h *ValidationHandler) Stream(srv interface{}, stream grpc.ServerStream, in
 }
 
 func (h *ValidationHandler) errorf(ctx context.Context, err error) error {
-	state, ok := status.FromError(err)
+	werr, ok := status.FromError(err)
 	if ok {
-		return state.Err()
+		return werr.Err()
 	}
 
-	if errs, ok := err.(validate.ValidationErrors); ok {
-		state = status.New(codes.InvalidArgument, "unprocessable entity")
-
-		var (
-			locale        = h.locale(ctx)
-			translator, _ = h.Translator.GetTranslator(locale)
-			kv            = make(map[string]interface{}, len(errs))
-		)
-
-		// map the error fields
-		for _, ferr := range errs {
-			// translate the error
-			kv[ferr.Field()] = ferr.Translate(translator)
-		}
-
-		// prepare the details
-		if details, err := structpb.NewStruct(kv); err == nil {
-			// add the error as details
-			if state, err = state.WithDetails(details); err != nil {
-				return err
-			}
-		}
-
-	} else {
-		state = status.New(codes.InvalidArgument, err.Error())
+	verr, ok := err.(validate.ValidationErrors)
+	if !ok {
+		werr = status.New(codes.InvalidArgument, err.Error())
+		return werr.Err()
 	}
 
-	return state.Err()
+	var (
+		locale        = h.locale(ctx)
+		translator, _ = h.Translator.GetTranslator(locale)
+		details       = &errdetails.BadRequest{}
+	)
+
+	// map the error fields
+	for _, ferr := range verr {
+		violation := &errdetails.BadRequest_FieldViolation{
+			Field:       ferr.Field(),
+			Description: ferr.Translate(translator),
+		}
+
+		details.FieldViolations = append(details.FieldViolations, violation)
+	}
+
+	werr, err = status.
+		New(codes.InvalidArgument, "Unprocessable entity").
+		WithDetails(details)
+
+	if err != nil {
+		return err
+	}
+
+	return werr.Err()
 }
 
 func (h *ValidationHandler) locale(ctx context.Context) string {
