@@ -6,10 +6,15 @@ import (
 	"time"
 
 	"github.com/phogolabs/log"
-	"go.opentelemetry.io/otel/api/trace"
+	"go.opentelemetry.io/otel/trace"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/metadata"
 )
+
+// Loggable allows a handler to control it's log level
+type Loggable interface {
+	LogLevel() log.Level
+}
 
 // Logger is the log interceptor
 var Logger = &LogHandler{}
@@ -19,6 +24,12 @@ type LogHandler struct{}
 
 // Unary does unary logging
 func (h *LogHandler) Unary(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {
+	level := log.InfoLevel
+
+	if loggable, ok := info.Server.(Loggable); ok {
+		level = loggable.LogLevel()
+	}
+
 	fields := annotation(ctx)
 	fields["method"] = info.FullMethod
 
@@ -33,18 +44,26 @@ func (h *LogHandler) Unary(ctx context.Context, req interface{}, info *grpc.Unar
 		"duration": time.Since(start).String(),
 	})
 
-	if err != nil {
+	if err != nil && level <= log.ErrorLevel {
 		logger.WithError(err).Error("executing method fail")
 		return nil, err
 	}
 
-	logger.Info("executing method success")
+	if level <= log.InfoLevel {
+		logger.Info("executing method success")
+	}
 	return response, nil
 
 }
 
 // Stream does stream logging
 func (h *LogHandler) Stream(srv interface{}, stream grpc.ServerStream, info *grpc.StreamServerInfo, handler grpc.StreamHandler) error {
+	level := log.InfoLevel
+
+	if loggable, ok := srv.(Loggable); ok {
+		level = loggable.LogLevel()
+	}
+
 	var (
 		ctx    = stream.Context()
 		logger = log.GetContext(ctx)
@@ -73,12 +92,14 @@ func (h *LogHandler) Stream(srv interface{}, stream grpc.ServerStream, info *grp
 		"duration": time.Since(start).String(),
 	})
 
-	if err != nil {
+	if err != nil && level <= log.ErrorLevel {
 		logger.WithError(err).Error("streaming method fail")
 		return err
 	}
 
-	logger.Info("streaming method success")
+	if level <= log.InfoLevel {
+		logger.Info("streaming method success")
+	}
 	return nil
 }
 

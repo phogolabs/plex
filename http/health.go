@@ -9,6 +9,9 @@ import (
 	"google.golang.org/grpc/metadata"
 )
 
+// HeaderLogLevel defines the hearbeat log level
+const HeaderLogLevel = "X-Log-Level"
+
 // HeaderHeartbeat represents a http header passed to the GRPC health check
 const HeaderHeartbeat = "X-Gateway-Heartbeat"
 
@@ -34,6 +37,7 @@ func (h *Heartbeat) Mount(proxy *Proxy) {
 func (h *Heartbeat) ready(w http.ResponseWriter, r *http.Request) {
 	// add metadata
 	r.Header.Set(HeaderHeartbeat, "ready")
+	r.Header.Set(HeaderLogLevel, log.ErrorLevel.String())
 	// do the check
 	h.check(w, r)
 }
@@ -41,6 +45,7 @@ func (h *Heartbeat) ready(w http.ResponseWriter, r *http.Request) {
 func (h *Heartbeat) live(w http.ResponseWriter, r *http.Request) {
 	// add metadata
 	r.Header.Set(HeaderHeartbeat, "live")
+	r.Header.Set(HeaderLogLevel, log.ErrorLevel.String())
 	// do the check
 	h.check(w, r)
 }

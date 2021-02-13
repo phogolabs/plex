@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/phogolabs/log"
+	"github.com/phogolabs/plex/grpc/interceptor"
 	"github.com/phogolabs/plex/grpc/meta"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/health/grpc_health_v1"
@@ -26,6 +27,8 @@ var (
 type Checker interface {
 	Check(context.Context) error
 }
+
+var _ interceptor.Loggable = &Heartbeat{}
 
 // Heartbeat represents a health endpoint
 type Heartbeat struct {
@@ -111,4 +114,9 @@ func (h *Heartbeat) Check(ctx context.Context, r *grpc_health_v1.HealthCheckRequ
 // Watch performs a watch for the serving status of the requested service.
 func (h *Heartbeat) Watch(*grpc_health_v1.HealthCheckRequest, grpc_health_v1.Health_WatchServer) error {
 	return status.Error(codes.Unimplemented, "watch method is not supported")
+}
+
+// LogLevel returns the desired log level
+func (h *Heartbeat) LogLevel() log.Level {
+	return log.ErrorLevel
 }
