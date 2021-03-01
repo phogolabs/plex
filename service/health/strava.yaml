@@ -1,0 +1,16 @@
+---
+vendor:
+- name: proto/google/api
+  source:
+   - https://raw.githubusercontent.com/googleapis/googleapis/master/google/api/annotations.proto
+   - https://raw.githubusercontent.com/googleapis/googleapis/master/google/api/resource.proto
+   - https://raw.githubusercontent.com/googleapis/googleapis/master/google/api/field_behavior.proto
+   - https://raw.githubusercontent.com/googleapis/googleapis/master/google/api/http.proto
+   - https://raw.githubusercontent.com/googleapis/googleapis/master/google/api/httpbody.proto
+   - https://raw.githubusercontent.com/googleapis/googleapis/master/google/api/client.proto
+
+- name: proto/protoc-gen-openapiv2/options
+  source:
+  - https://raw.githubusercontent.com/grpc-ecosystem/grpc-gateway/master/protoc-gen-openapiv2/options/annotations.proto
+  - https://raw.githubusercontent.com/grpc-ecosystem/grpc-gateway/master/protoc-gen-openapiv2/options/openapiv2.proto
+

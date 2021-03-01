@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+package phogolabs.plex.health;
+
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+option go_package = "github.com/phogolabs/plex/service/health;health";
+
+// HeartbeatAPI represents a health check service
+service HeartbeatAPI {
+  // CheckLive checks the live state
+  rpc CheckLive(CheckLiveRequest) returns (CheckLiveResponse) {
+    option (google.api.http) = {
+      post : "/heartbeat/live"
+      body : "*"
+    };
+  }
+
+  // CheckReady checks the ready state
+  rpc CheckReady(CheckReadyRequest) returns (CheckReadyResponse) {
+    option (google.api.http) = {
+      post : "/heartbeat/ready"
+      body : "*"
+    };
+  }
+}
+
+// CheckReadyRequest is the payload sent to check the ready state
+message CheckReadyRequest {}
+
+// CheckReadyResponse is the ready state payload returned to the client
+message CheckReadyResponse {}
+
+// CheckLiveRequest is the payload sent to check the live state
+message CheckLiveRequest {}
+
+// CheckLiveResponse is the live state payload returned to the client
+message CheckLiveResponse {}
