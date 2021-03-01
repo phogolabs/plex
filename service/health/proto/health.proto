@@ -12,16 +12,14 @@ service HeartbeatAPI {
   // CheckLive checks the live state
   rpc CheckLive(CheckLiveRequest) returns (CheckLiveResponse) {
     option (google.api.http) = {
-      post : "/heartbeat/live"
-      body : "*"
+      get : "/heartbeat/live"
     };
   }
 
   // CheckReady checks the ready state
   rpc CheckReady(CheckReadyRequest) returns (CheckReadyResponse) {
     option (google.api.http) = {
-      post : "/heartbeat/ready"
-      body : "*"
+      get : "/heartbeat/ready"
     };
   }
 }

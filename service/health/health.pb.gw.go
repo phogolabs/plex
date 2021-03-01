@@ -35,14 +35,6 @@ func request_HeartbeatAPI_CheckLive_0(ctx context.Context, marshaler runtime.Mar
 	var protoReq CheckLiveRequest
 	var metadata runtime.ServerMetadata
 
-	newReader, berr := utilities.IOReaderFactory(req.Body)
-	if berr != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
-	}
-	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq); err != nil && err != io.EOF {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
-	}
-
 	msg, err := client.CheckLive(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 
@@ -51,14 +43,6 @@ func request_HeartbeatAPI_CheckLive_0(ctx context.Context, marshaler runtime.Mar
 func local_request_HeartbeatAPI_CheckLive_0(ctx context.Context, marshaler runtime.Marshaler, server HeartbeatAPIServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq CheckLiveRequest
 	var metadata runtime.ServerMetadata
-
-	newReader, berr := utilities.IOReaderFactory(req.Body)
-	if berr != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
-	}
-	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq); err != nil && err != io.EOF {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
-	}
 
 	msg, err := server.CheckLive(ctx, &protoReq)
 	return msg, metadata, err
@@ -69,14 +53,6 @@ func request_HeartbeatAPI_CheckReady_0(ctx context.Context, marshaler runtime.Ma
 	var protoReq CheckReadyRequest
 	var metadata runtime.ServerMetadata
 
-	newReader, berr := utilities.IOReaderFactory(req.Body)
-	if berr != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
-	}
-	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq); err != nil && err != io.EOF {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
-	}
-
 	msg, err := client.CheckReady(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 
@@ -85,14 +61,6 @@ func request_HeartbeatAPI_CheckReady_0(ctx context.Context, marshaler runtime.Ma
 func local_request_HeartbeatAPI_CheckReady_0(ctx context.Context, marshaler runtime.Marshaler, server HeartbeatAPIServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq CheckReadyRequest
 	var metadata runtime.ServerMetadata
-
-	newReader, berr := utilities.IOReaderFactory(req.Body)
-	if berr != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
-	}
-	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq); err != nil && err != io.EOF {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
-	}
 
 	msg, err := server.CheckReady(ctx, &protoReq)
 	return msg, metadata, err
@@ -105,7 +73,7 @@ func local_request_HeartbeatAPI_CheckReady_0(ctx context.Context, marshaler runt
 // Note that using this registration option will cause many gRPC library features to stop working. Consider using RegisterHeartbeatAPIHandlerFromEndpoint instead.
 func RegisterHeartbeatAPIHandlerServer(ctx context.Context, mux *runtime.ServeMux, server HeartbeatAPIServer) error {
 
-	mux.Handle("POST", pattern_HeartbeatAPI_CheckLive_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_HeartbeatAPI_CheckLive_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -128,7 +96,7 @@ func RegisterHeartbeatAPIHandlerServer(ctx context.Context, mux *runtime.ServeMu
 
 	})
 
-	mux.Handle("POST", pattern_HeartbeatAPI_CheckReady_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_HeartbeatAPI_CheckReady_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -192,7 +160,7 @@ func RegisterHeartbeatAPIHandler(ctx context.Context, mux *runtime.ServeMux, con
 // "HeartbeatAPIClient" to call the correct interceptors.
 func RegisterHeartbeatAPIHandlerClient(ctx context.Context, mux *runtime.ServeMux, client HeartbeatAPIClient) error {
 
-	mux.Handle("POST", pattern_HeartbeatAPI_CheckLive_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_HeartbeatAPI_CheckLive_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -212,7 +180,7 @@ func RegisterHeartbeatAPIHandlerClient(ctx context.Context, mux *runtime.ServeMu
 
 	})
 
-	mux.Handle("POST", pattern_HeartbeatAPI_CheckReady_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_HeartbeatAPI_CheckReady_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
