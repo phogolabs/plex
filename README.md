@@ -5,37 +5,18 @@
 [![Coverage][codecov-img]][codecov-url]
 [![Go Report Card][report-img]][report-url]
 
-A multiplexer that allows GRPC and HTTP server listening on the same port
+A multiplexer that allows Google Remote Procedure Call and HTTP server listening on the same port
 
 ## Installation
 
 ```console
 $ go get -u github.com/phogolabs/plex
 ```
+
 ## Getting started
 
-```golang
-import (
-  "github.com/phogolabs/plex"
-)
-
-func main() {
-	// create the plex server
-	server := plex.NewServer()
-
-	// register the http proxy
-	server.Proxy.Use(sdk.RegisterYourAPIHandler)
-
-	// register the server handler
-	sdk.RegisterYourAPIServer(server.Gateway.Server, handler)
-
-	log.Infof("server is listening on %v for grpc or http", server.Addr)
-
-	if err := server.ListenAndServe(); err != nil {
-		log.WithError(err).Error("server listen and serve failed")
-	}
-}
-```
+For more information about how to use the package, have a look the
+[example](./example/README.md) service implementation.
 
 ## Contributing
 

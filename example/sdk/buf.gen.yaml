@@ -1,0 +1,26 @@
+version: v1beta1
+
+plugins:
+  - name: go
+    opt: paths=source_relative
+    out: .
+
+  - name: go-grpc
+    opt: paths=source_relative,require_unimplemented_servers=false
+    out: .
+
+  - name: grpc-gateway
+    opt: paths=source_relative,logtostderr=true,allow_patch_feature=true
+    out: .
+
+  - name: openapiv2
+    opt: logtostderr=true,fqn_for_openapi_name=true,json_names_for_fields=false,simple_operation_ids=true
+    out: .
+
+  - name: gotagger
+    opt: output_path=.
+    out: .
+
+  - name: doc
+    opt: markdown,README.md
+    out: .

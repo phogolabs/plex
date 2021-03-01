@@ -1,0 +1,37 @@
+version: v1beta1
+
+name: github.com/cliche-digital/plex
+
+build:
+  roots:
+    - ./proto
+
+lint:
+  service_suffix: API
+  # comment rules
+  allow_comment_ignores: true
+  # rpc rules
+  rpc_allow_same_request_response: false
+  rpc_allow_google_protobuf_empty_requests: false
+  rpc_allow_google_protobuf_empty_responses: false
+  # enum rules
+  enum_zero_value_suffix: _UNSPECIFIED
+
+  ignore:
+    - google
+    - protoc-gen-openapiv2
+    - protoc-gen-gotaggger
+
+  use:
+    - DEFAULT
+    - COMMENTS
+    - UNARY_RPC
+
+  except:
+    - PACKAGE_VERSION_SUFFIX
+    - PACKAGE_DIRECTORY_MATCH
+    - RPC_NO_CLIENT_STREAMING
+
+breaking:
+  use:
+    - WIRE_JSON

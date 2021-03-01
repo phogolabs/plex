@@ -33,7 +33,7 @@ func New() *plex.Server {
 	)
 
 	// handler setup
-	handler := &FooHandler{}
+	handler := &UserAPI{}
 	handler.Mount(server)
 
 	// return the server

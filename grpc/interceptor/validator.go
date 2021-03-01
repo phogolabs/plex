@@ -30,10 +30,12 @@ var Validator = &ValidationHandler{
 
 func init() {
 	translator, _ := Validator.Translator.GetTranslator("en")
-	// register the translations
-	validateEn.RegisterDefaultTranslations(Validator.Validator, translator)
 	// prepare the validator
 	Validator.Validator.RegisterTagNameFunc(ExtractValidationFieldName)
+	// register the translations
+	if err := validateEn.RegisterDefaultTranslations(Validator.Validator, translator); err != nil {
+		panic(err)
+	}
 }
 
 // ValidationHandler represents a logger

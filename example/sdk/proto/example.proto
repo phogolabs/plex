@@ -1,0 +1,76 @@
+syntax = "proto3";
+
+package phogolabs.plex.example.sdk;
+
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+import "protoc-gen-gotagger/tagger.proto";
+
+option go_package = "github.com/phogolabs/plex/example/sdk;sdk";
+
+option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+  info : {
+    title : "User API"
+    version : "1.0"
+    contact : {
+      name : "Phogo Labs"
+      email : "no-reply@phogolabs.com"
+      url : "https://github.com/phogolabs/plex"
+    }
+  }
+
+  schemes : HTTP
+  schemes : HTTPS
+
+  host : "localhost:8080"
+};
+
+// UserAPI represents the User API server
+service UserAPI {
+  // CreateUser creates a new user for given email and password
+  rpc CreateUser(CreateUserRequest) returns (CreateUserResponse) {
+    option (google.api.http) = {
+      post : "/v1/users"
+      body : "*"
+    };
+  }
+}
+
+// CreateUserRequest creates an account for given email and password
+message CreateUserRequest {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema : {required : [ 'email', 'password' ]}
+  };
+
+  // Represents the user's email address.
+  string email = 1 [
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      read_only : true,
+      max_length : 256
+      pattern : '^(([^<>()\\[\\]\\\\.,;:\\s@\"]+(\\.[^<>()\\[\\]\\\\.,;:\\s@\"]+)*)|(\".+\"))@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$'
+    },
+    (tagger.tags) = "validate:\"required,gt=0,lte=256,email\" form:\"email\""
+  ];
+
+  // Represents the user's password.
+  string password = 2 [
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      min_length : 8,
+      read_only : true,
+    },
+    (tagger.tags) = "validate:\"required,gte=8\" form:\"password\""
+  ];
+}
+
+// CreateUserResponse is the payload returned when a new user is created
+message CreateUserResponse {
+  // Represents the publication's unique identifier.
+  string id = 1 [
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      min_length : 1,
+      read_only : true,
+      pattern : '[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}'
+    },
+    (tagger.tags) = "validate:\"required,gt=0,uuid\""
+  ];
+}

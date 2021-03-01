@@ -2,19 +2,12 @@ package main
 
 import (
 	"github.com/phogolabs/log"
-	"github.com/phogolabs/plex/_examples/form/service"
+	"github.com/phogolabs/plex/example/internal/service"
 	"github.com/phogolabs/plex/grpc"
 	"github.com/phogolabs/plex/http"
-	"go.opentelemetry.io/otel/exporters/stdout"
 )
 
 func main() {
-	pusher, err := stdout.InstallNewPipeline(nil, nil)
-	if err != nil {
-		log.WithError(err).Fatal("cannot install pipeline")
-	}
-
-	defer pusher.Stop()
 	// create the plex server
 	server := service.New()
 
