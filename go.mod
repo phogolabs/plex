@@ -16,14 +16,15 @@ require (
 	github.com/phogolabs/flaw v0.0.0-20210306145544-6984b46f2d8f
 	github.com/phogolabs/inflate v0.0.0-20200311164934-99bf1dd99c03
 	github.com/phogolabs/log v0.0.0-20210306145126-52c24a2892fb
-	github.com/phogolabs/restify v0.0.0-20210301135413-e8eaf694c093
+	github.com/phogolabs/restify v0.0.0-20210306145306-007c18933e4b
 	github.com/soheilhy/cmux v0.1.4
 	go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc v0.18.0
 	go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.18.0
 	go.opentelemetry.io/otel/trace v0.18.0
 	golang.org/x/crypto v0.0.0-20210220033148-5ea612d1eb83 // indirect
 	golang.org/x/sync v0.0.0-20210220032951-036812b2e83c
-	google.golang.org/genproto v0.0.0-20210303154014-9728d6b83eeb
+	golang.org/x/sys v0.0.0-20210313110737-8e9fff1a3a18 // indirect
+	google.golang.org/genproto v0.0.0-20210312152112-fc591d9ea70f
 	google.golang.org/grpc v1.36.0
 	google.golang.org/grpc/examples v0.0.0-20201111181252-28c130fe3d7e // indirect
 	google.golang.org/protobuf v1.25.1-0.20201208041424-160c7477e0e8
