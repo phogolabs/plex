@@ -104,8 +104,6 @@ func Accept(next http.Handler) http.Handler {
 // ContentType prepare the Content-Type header for underlying requests
 func ContentType(next http.Handler) http.Handler {
 	fn := func(w http.ResponseWriter, r *http.Request) {
-		// prepare the header values
-		PrepareMediaType(HeaderContentType, r)
 		// set the header media type
 		SetMediaType(HeaderContentType, r)
 		// serve the request

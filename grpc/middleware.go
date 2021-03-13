@@ -10,4 +10,4 @@ const (
 )
 
 // Match matches the request
-var Match = cmux.HTTP2MatchHeaderFieldSendSettings("content-type", ContentType)
+var Match = cmux.HTTP2MatchHeaderFieldPrefixSendSettings("content-type", ContentType)
