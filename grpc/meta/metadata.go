@@ -2,6 +2,7 @@ package meta
 
 import (
 	"context"
+	"strconv"
 	"strings"
 
 	"google.golang.org/grpc/metadata"
@@ -33,6 +34,12 @@ func Get(ctx context.Context, key string) string {
 	}
 
 	return ""
+}
+
+// GetInt returns the integer value for given key fromt he metadata
+func GetInt(ctx context.Context, key string) (int, error) {
+	value := Get(ctx, key)
+	return strconv.Atoi(value)
 }
 
 // GetOrDefault returns the value for given key fromt he metadata
