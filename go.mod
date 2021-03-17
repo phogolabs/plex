@@ -21,10 +21,11 @@ require (
 	go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc v0.18.0
 	go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.18.0
 	go.opentelemetry.io/otel/trace v0.18.0
-	golang.org/x/crypto v0.0.0-20210220033148-5ea612d1eb83 // indirect
+	golang.org/x/crypto v0.0.0-20210317152858-513c2a44f670 // indirect
+	golang.org/x/net v0.0.0-20210316092652-d523dce5a7f4 // indirect
 	golang.org/x/sync v0.0.0-20210220032951-036812b2e83c
-	golang.org/x/sys v0.0.0-20210313110737-8e9fff1a3a18 // indirect
-	google.golang.org/genproto v0.0.0-20210312152112-fc591d9ea70f
+	golang.org/x/sys v0.0.0-20210317091845-390168757d9c // indirect
+	google.golang.org/genproto v0.0.0-20210315173758-2651cd453018
 	google.golang.org/grpc v1.36.0
 	google.golang.org/grpc/examples v0.0.0-20201111181252-28c130fe3d7e // indirect
 	google.golang.org/protobuf v1.25.1-0.20201208041424-160c7477e0e8
