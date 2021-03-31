@@ -26,7 +26,9 @@ const (
 	// ContentTypeForm is the form url encoded
 	ContentTypeForm = "application/x-www-form-urlencoded"
 	// ContentTypeGRPC represents 'application/grpc' content-type
-	ContentTypeGRPC = "application/grpc"
+	ContentTypeGRPCProto = "application/grpc"
+	// ContentTypeGRPC represents 'application/grpc' content-type
+	ContentTypeGRPCJSON = "application/grpc+json"
 	// ContentTypeJSON represents 'application/json' content-type
 	ContentTypeJSON = "application/json"
 )
@@ -136,7 +138,11 @@ func Match(body io.Reader) bool {
 	}
 
 	for _, value := range r.Header[HeaderContentType] {
-		if strings.Contains(value, ContentTypeGRPC) {
+		if strings.Contains(value, ContentTypeGRPCJSON) {
+			return true
+		}
+
+		if strings.Contains(value, ContentTypeGRPCProto) {
 			return false
 		}
 	}
