@@ -9,6 +9,11 @@
       "email": "no-reply@phogolabs.com"
     }
   },
+  "tags": [
+    {
+      "name": "UserAPI"
+    }
+  ],
   "host": "localhost:8080",
   "schemes": [
     "http",
