@@ -1,10 +1,12 @@
 package proto
 
 import (
+	"encoding/json"
 	"fmt"
 	"strings"
 	"time"
 
+	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"google.golang.org/protobuf/types/known/timestamppb"
@@ -113,5 +115,18 @@ func URLRef(x proto.Message) string {
 		schema  = x.ProtoReflect().Descriptor().ParentFile()
 	)
 
-	return fmt.Sprintf("https://%v/%v", schema.Package(), message.FullName())
+	if data, err := protojson.Marshal(schema.Options()); err == nil {
+		// fetch the options
+		options := make(map[string]interface{})
+		// get the options
+		if err = json.Unmarshal(data, &options); err == nil {
+			if value, ok := options["goPackage"].(string); ok {
+				if parts := strings.Split(value, ";"); len(parts) > 0 {
+					return fmt.Sprintf("https://%v/%v", parts[0], message.Name())
+				}
+			}
+		}
+	}
+
+	return fmt.Sprintf("https://%v", message.FullName())
 }
