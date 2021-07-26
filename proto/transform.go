@@ -6,6 +6,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/jinzhu/inflection"
 	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
@@ -106,6 +107,16 @@ func UnionMask(x *fieldmaskpb.FieldMask, columns ...string) *fieldmaskpb.FieldMa
 	}
 
 	return fieldmaskpb.Union(x, y)
+}
+
+// NamespaceRef returns the message namespace
+func NamespaceRef(x proto.Message) string {
+	namespace := string(x.ProtoReflect().Descriptor().Name())
+	// sanitize
+	namespace = inflection.Plural(namespace)
+	namespace = strings.ToLower(namespace)
+	// give back
+	return namespace
 }
 
 // URLRef returns the type name.

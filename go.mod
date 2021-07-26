@@ -14,6 +14,7 @@ require (
 	github.com/golang/protobuf v1.5.2
 	github.com/goware/errorx v0.0.0-20150526135951-6c5540545f5f
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.5.0
+	github.com/jinzhu/inflection v1.0.0
 	github.com/phogolabs/flaw v0.0.0-20210430130223-f948049b189e
 	github.com/phogolabs/inflate v0.0.0-20200311164934-99bf1dd99c03
 	github.com/phogolabs/log v0.0.0-20210430125128-bb23cd1dfac5
