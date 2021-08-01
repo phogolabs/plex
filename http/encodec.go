@@ -15,17 +15,21 @@ import (
 
 var (
 	// WithFormMarshaler allows marshaling application/x-www-form-urlencoded requests
-	WithFormMarshaler = runtime.WithMarshalerOption(ContentTypeForm,
-		&FormMarshaler{},
-	)
+	WithFormMarshaler = runtime.WithMarshalerOption(ContentTypeForm, &runtime.HTTPBodyMarshaler{
+		Marshaler: &FormMarshaler{},
+	})
 
-	// WithJSONMarshaler allows marshaling application/x-www-form-urlencoded requests
-	WithJSONMarshaler = runtime.WithMarshalerOption(ContentTypeJSON,
-		&runtime.JSONPb{
+	// WithJSONMarshaler allows marshaling application/json requests
+	WithJSONMarshaler = runtime.WithMarshalerOption(ContentTypeJSON, &runtime.HTTPBodyMarshaler{
+		Marshaler: &runtime.JSONPb{
 			MarshalOptions: protojson.MarshalOptions{
 				UseProtoNames: true,
 			},
-		})
+			UnmarshalOptions: protojson.UnmarshalOptions{
+				DiscardUnknown: true,
+			},
+		},
+	})
 )
 
 // FormMarshaler defines a conversion between byte sequence and gRPC payloads / fields.

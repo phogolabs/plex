@@ -27,7 +27,7 @@ You can make a json-post request the the following command:
 ```bash
 $ curl -v -X POST http://localhost:8080/v1/users \
   -H 'Content-Type: application/json' \
-  -d '{"email":"john.doe@example.com", "password": "swordfish}'
+  -d '{"email":"john.doe@example.com", "password": "swordfish"}'
 ```
 
 The response for both formats produces the same response:
