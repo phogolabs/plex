@@ -79,7 +79,7 @@ func RegisterHeartbeatAPIHandlerServer(ctx context.Context, mux *runtime.ServeMu
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/phogolabs.plex.health.HeartbeatAPI/CheckLive")
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/phogolabs.plex.health.HeartbeatAPI/CheckLive", runtime.WithHTTPPathPattern("/heartbeat/live"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -102,7 +102,7 @@ func RegisterHeartbeatAPIHandlerServer(ctx context.Context, mux *runtime.ServeMu
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/phogolabs.plex.health.HeartbeatAPI/CheckReady")
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/phogolabs.plex.health.HeartbeatAPI/CheckReady", runtime.WithHTTPPathPattern("/heartbeat/ready"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -164,7 +164,7 @@ func RegisterHeartbeatAPIHandlerClient(ctx context.Context, mux *runtime.ServeMu
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/phogolabs.plex.health.HeartbeatAPI/CheckLive")
+		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/phogolabs.plex.health.HeartbeatAPI/CheckLive", runtime.WithHTTPPathPattern("/heartbeat/live"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -184,7 +184,7 @@ func RegisterHeartbeatAPIHandlerClient(ctx context.Context, mux *runtime.ServeMu
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/phogolabs.plex.health.HeartbeatAPI/CheckReady")
+		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/phogolabs.plex.health.HeartbeatAPI/CheckReady", runtime.WithHTTPPathPattern("/heartbeat/ready"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return

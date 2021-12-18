@@ -4,13 +4,13 @@ import (
 	"context"
 	"net/http"
 
-	"github.com/golang/protobuf/ptypes/wrappers"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/metadata"
+	"google.golang.org/protobuf/types/known/wrapperspb"
 )
 
 // ToString convert to a string pointer from wrapper
-func ToString(value *wrappers.StringValue) *string {
+func ToString(value *wrapperspb.StringValue) *string {
 	if value != nil {
 		return &value.Value
 	}
@@ -19,9 +19,9 @@ func ToString(value *wrappers.StringValue) *string {
 }
 
 // GetString converts to a string wrapper from a string pointer
-func GetString(value *string) *wrappers.StringValue {
+func GetString(value *string) *wrapperspb.StringValue {
 	if value != nil {
-		return &wrappers.StringValue{Value: *value}
+		return &wrapperspb.StringValue{Value: *value}
 	}
 
 	return nil
