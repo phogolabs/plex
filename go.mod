@@ -18,10 +18,11 @@ require (
 	github.com/phogolabs/flaw v0.0.0-20210430130223-f948049b189e
 	github.com/phogolabs/inflate v0.0.0-20200311164934-99bf1dd99c03
 	github.com/phogolabs/log v0.0.0-20210430125128-bb23cd1dfac5
-	github.com/phogolabs/restify v0.0.0-20210430125551-7bff6967ee37
+	github.com/phogolabs/restify v0.0.0-20211230173746-5eb0f64526fe
 	github.com/soheilhy/cmux v0.1.5
 	go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc v0.28.0
 	go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.28.0
+	go.opentelemetry.io/otel/oteltest v0.20.0 // indirect
 	go.opentelemetry.io/otel/trace v1.3.0
 	golang.org/x/crypto v0.0.0-20211215153901-e495a2d5b3d3 // indirect
 	golang.org/x/net v0.0.0-20211216030914-fe4d6282115f // indirect
