@@ -1,6 +1,8 @@
 package http
 
 import (
+	"strings"
+
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 )
 
@@ -67,12 +69,13 @@ var (
 
 var (
 	// AllIncomingHeaders allows the service to handle all incoming request
-	AllIncomingHeaders = runtime.WithIncomingHeaderMatcher(func(h string) (string, bool) {
-		return h, true
-	})
+	AllIncomingHeaders = runtime.WithIncomingHeaderMatcher(preserve)
 
 	// AllOutgoingHeaders allows the service to handle all incoming request
-	AllOutgoingHeaders = runtime.WithOutgoingHeaderMatcher(func(h string) (string, bool) {
-		return h, true
-	})
+	AllOutgoingHeaders = runtime.WithOutgoingHeaderMatcher(preserve)
 )
+
+func preserve(value string) (string, bool) {
+	value = strings.TrimRight(value, "\r\n")
+	return value, true
+}
