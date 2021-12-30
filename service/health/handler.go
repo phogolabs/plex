@@ -2,7 +2,6 @@ package health
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/phogolabs/log"
 	"github.com/phogolabs/plex"
@@ -37,9 +36,12 @@ func (h *HeartbeatAPI) Mount(server *plex.Server) {
 
 // CheckLive checks the live state
 func (h *HeartbeatAPI) CheckLive(ctx context.Context, _ *CheckLiveRequest) (*CheckLiveResponse, error) {
+	logger := log.GetContext(ctx)
+
 	for _, checker := range h.LiveCheckers {
 		if err := checker.Check(ctx); err != nil {
-			return nil, fmt.Errorf("%s: %w", checker.Name(), err)
+			logger.WithError(err).Errorf("live checker %v failure", checker.Name())
+			return nil, err
 		}
 	}
 
@@ -48,8 +50,11 @@ func (h *HeartbeatAPI) CheckLive(ctx context.Context, _ *CheckLiveRequest) (*Che
 
 // CheckReady checks the ready state
 func (h *HeartbeatAPI) CheckReady(ctx context.Context, _ *CheckReadyRequest) (*CheckReadyResponse, error) {
+	logger := log.GetContext(ctx)
+
 	for _, checker := range h.ReadyCheckers {
 		if err := checker.Check(ctx); err != nil {
+			logger.WithError(err).Errorf("ready checker %v failure", checker.Name())
 			return nil, err
 		}
 	}
