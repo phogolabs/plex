@@ -76,6 +76,9 @@ var (
 )
 
 func preserve(value string) (string, bool) {
-	value = strings.TrimRight(value, "\r\n")
+	if strings.EqualFold(value, "connection") {
+		return "", false
+	}
+
 	return value, true
 }
