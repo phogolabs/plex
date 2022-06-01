@@ -122,6 +122,7 @@ func Metadata(next http.Handler) http.Handler {
 		r.Header.Set("X-Plex-Real-Ip", r.RemoteAddr)
 		r.Header.Set("X-Plex-Request-Id", middleware.GetReqID(r.Context()))
 		r.Header.Set("X-Plex-User-Agent", r.UserAgent())
+		r.Header.Set("X-Plex-Url", r.URL.String())
 
 		// serve the request
 		next.ServeHTTP(w, r)
