@@ -13,6 +13,9 @@ service HeartbeatAPI {
   rpc CheckLive(CheckLiveRequest) returns (CheckLiveResponse) {
     option (google.api.http) = {
       get : "/heartbeat/live"
+      additional_bindings : [
+        {custom : {kind : "HEAD" path : "/heartbeat/live"}}
+      ]
     };
   }
 
@@ -20,6 +23,9 @@ service HeartbeatAPI {
   rpc CheckReady(CheckReadyRequest) returns (CheckReadyResponse) {
     option (google.api.http) = {
       get : "/heartbeat/ready"
+      additional_bindings : [
+        {custom : {kind : "HEAD" path : "/heartbeat/ready"}}
+      ]
     };
   }
 }
