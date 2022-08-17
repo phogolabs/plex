@@ -13,6 +13,11 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
+// Bool stores v in a new bool value and returns a pointer to it.
+func Bool(value bool) *bool {
+	return &value
+}
+
 // String stores v in a new string value and returns a pointer to it.
 func String(value string) *string {
 	if len(value) > 0 {
