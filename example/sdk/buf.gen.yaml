@@ -14,11 +14,7 @@ plugins:
     out: .
 
   - name: openapiv2
-    opt: logtostderr=true,fqn_for_openapi_name=true,json_names_for_fields=false,simple_operation_ids=true
-    out: .
-
-  - name: gotagger
-    opt: output_path=.
+    opt: logtostderr=true,openapi_naming_strategy=simple,json_names_for_fields=false,simple_operation_ids=true,disable_default_errors=true
     out: .
 
   - name: doc

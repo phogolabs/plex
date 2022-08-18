@@ -36,12 +36,6 @@
             "schema": {
               "$ref": "#/definitions/CreateUserResponse"
             }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
           }
         },
         "parameters": [
@@ -61,36 +55,6 @@
     }
   },
   "definitions": {
-    "Any": {
-      "type": "object",
-      "properties": {
-        "type_url": {
-          "type": "string"
-        },
-        "value": {
-          "type": "string",
-          "format": "byte"
-        }
-      }
-    },
-    "Error": {
-      "type": "object",
-      "properties": {
-        "code": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "message": {
-          "type": "string"
-        },
-        "details": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/Any"
-          }
-        }
-      }
-    },
     "CreateUserRequest": {
       "type": "object",
       "properties": {
