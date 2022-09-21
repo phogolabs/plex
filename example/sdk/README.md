@@ -3,35 +3,84 @@
 
 ## Table of Contents
 
-- [protoc-gen-gotagger/tagger.proto](#protoc-gen-gotagger_tagger-proto)
-    - [File-level Extensions](#protoc-gen-gotagger_tagger-proto-extensions)
-    - [File-level Extensions](#protoc-gen-gotagger_tagger-proto-extensions)
+- [example.proto](#example-proto)
+    - [CreateUserRequest](#phogolabs-plex-example-sdk-CreateUserRequest)
+    - [CreateUserResponse](#phogolabs-plex-example-sdk-CreateUserResponse)
+    - [User](#phogolabs-plex-example-sdk-User)
+  
+    - [UserAPI](#phogolabs-plex-example-sdk-UserAPI)
   
 - [Scalar Value Types](#scalar-value-types)
 
 
 
-<a name="protoc-gen-gotagger_tagger-proto"></a>
+<a name="example-proto"></a>
 <p align="right"><a href="#top">Top</a></p>
 
-## protoc-gen-gotagger/tagger.proto
-This file has been copied from here:
-https://github.com/srikrsna/protoc-gen-gotag/blob/master/tagger/tagger.proto
+## example.proto
+
+
+
+<a name="phogolabs-plex-example-sdk-CreateUserRequest"></a>
+
+### CreateUserRequest
+CreateUserRequest creates an account for given email and password
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| user | [User](#phogolabs-plex-example-sdk-User) |  | User represents a user |
+
+
+
+
+
+
+<a name="phogolabs-plex-example-sdk-CreateUserResponse"></a>
+
+### CreateUserResponse
+CreateUserResponse is the payload returned when a new user is created
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| id | [string](#string) |  | Represents the publication&#39;s unique identifier. |
+
+
+
+
+
+
+<a name="phogolabs-plex-example-sdk-User"></a>
+
+### User
+User details
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| email | [string](#string) |  | Represents the user&#39;s email address. |
+| password | [string](#string) |  | Represents the user&#39;s password. |
+
+
+
+
 
  
 
  
 
-
-<a name="protoc-gen-gotagger_tagger-proto-extensions"></a>
-
-### File-level Extensions
-| Extension | Type | Base | Number | Description |
-| --------- | ---- | ---- | ------ | ----------- |
-| tags | string | .google.protobuf.FieldOptions | 847939 | Multiple Tags can be specified . |
-| oneof_tags | string | .google.protobuf.OneofOptions | 847939 | Multiple Tags can be specified. |
+ 
 
 
+<a name="phogolabs-plex-example-sdk-UserAPI"></a>
+
+### UserAPI
+UserAPI represents the User API server
+
+| Method Name | Request Type | Response Type | Description |
+| ----------- | ------------ | ------------- | ------------|
+| CreateUser | [CreateUserRequest](#phogolabs-plex-example-sdk-CreateUserRequest) | [CreateUserResponse](#phogolabs-plex-example-sdk-CreateUserResponse) | CreateUser creates a new user for given email and password |
 
  
 

@@ -1,0 +1,20 @@
+version: v1
+
+name: buf.build/phogolabs/plex
+
+deps:
+  - buf.build/googleapis/googleapis:054ad027c6734cf592282dfd22f4f45e
+  - buf.build/grpc-ecosystem/grpc-gateway:462ede5f3dee45569df6317bda220b1b
+  - buf.build/srikrsna/protoc-gen-gotag:04b38c6f540d4d2fa9cfd49ae01ae73b
+  - buf.build/iamralch/protoc-vendor:5980331e53624a7ea0765e373b750b51
+
+breaking:
+  use:
+    - WIRE_JSON
+
+lint:
+  use:
+    - DEFAULT
+  ignore:
+    - example.proto
+

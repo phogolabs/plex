@@ -4,7 +4,7 @@ package phogolabs.plex.example.sdk;
 
 import "google/api/annotations.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
-import "protoc-gen-gotagger/tagger.proto";
+import "tagger/tagger.proto";
 
 option go_package = "github.com/phogolabs/plex/example/sdk;sdk";
 
@@ -31,17 +31,32 @@ service UserAPI {
   rpc CreateUser(CreateUserRequest) returns (CreateUserResponse) {
     option (google.api.http) = {
       post : "/v1/users"
-      body : "*"
+      body : "user"
     };
   }
 }
 
 // CreateUserRequest creates an account for given email and password
 message CreateUserRequest {
-  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
-    json_schema : {required : [ 'email', 'password' ]}
-  };
+  // User represents a user
+  User user = 1 [ (tagger.tags) = "validate:\"required\"" ];
+}
 
+// CreateUserResponse is the payload returned when a new user is created
+message CreateUserResponse {
+  // Represents the publication's unique identifier.
+  string id = 1 [
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      min_length : 1,
+      read_only : true,
+      pattern : '[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}'
+    },
+    (tagger.tags) = "validate:\"required,gt=0,uuid\""
+  ];
+}
+
+// User details
+message User {
   // Represents the user's email address.
   string email = 1 [
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
@@ -59,18 +74,5 @@ message CreateUserRequest {
       read_only : true,
     },
     (tagger.tags) = "validate:\"required,gte=8\" form:\"password\""
-  ];
-}
-
-// CreateUserResponse is the payload returned when a new user is created
-message CreateUserResponse {
-  // Represents the publication's unique identifier.
-  string id = 1 [
-    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-      min_length : 1,
-      read_only : true,
-      pattern : '[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}'
-    },
-    (tagger.tags) = "validate:\"required,gt=0,uuid\""
   ];
 }

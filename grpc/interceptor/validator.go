@@ -9,6 +9,7 @@ import (
 	translator "github.com/go-playground/universal-translator"
 	validate "github.com/go-playground/validator/v10"
 	validateEn "github.com/go-playground/validator/v10/translations/en"
+	"github.com/phogolabs/log"
 
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
 	"google.golang.org/grpc"
@@ -52,6 +53,8 @@ func (h *ValidationHandler) RegisterValidationCtx(tag string, fn validate.FuncCt
 
 // Unary does unary validation
 func (h *ValidationHandler) Unary(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (_ interface{}, err error) {
+	logger := log.GetContext(ctx)
+
 	if validator, ok := req.(Validatable); ok {
 		err = validator.Validate()
 	} else {
@@ -61,6 +64,7 @@ func (h *ValidationHandler) Unary(ctx context.Context, req interface{}, info *gr
 	}
 
 	if err != nil {
+		logger.WithError(err).Warn("validation failure")
 		return nil, h.errorf(ctx, err)
 	}
 

@@ -40,11 +40,12 @@
         },
         "parameters": [
           {
-            "name": "body",
+            "name": "user",
+            "description": "User represents a user",
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/CreateUserRequest"
+              "$ref": "#/definitions/User"
             }
           }
         ],
@@ -55,7 +56,20 @@
     }
   },
   "definitions": {
-    "CreateUserRequest": {
+    "CreateUserResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Represents the publication's unique identifier.",
+          "readOnly": true,
+          "minLength": 1,
+          "pattern": "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"
+        }
+      },
+      "title": "CreateUserResponse is the payload returned when a new user is created"
+    },
+    "User": {
       "type": "object",
       "properties": {
         "email": {
@@ -72,24 +86,7 @@
           "minLength": 8
         }
       },
-      "title": "CreateUserRequest creates an account for given email and password",
-      "required": [
-        "email",
-        "password"
-      ]
-    },
-    "CreateUserResponse": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "string",
-          "description": "Represents the publication's unique identifier.",
-          "readOnly": true,
-          "minLength": 1,
-          "pattern": "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"
-        }
-      },
-      "title": "CreateUserResponse is the payload returned when a new user is created"
+      "title": "User details"
     }
   }
 }
