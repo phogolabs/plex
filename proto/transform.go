@@ -18,6 +18,15 @@ func Bool(value bool) *bool {
 	return &value
 }
 
+// GetBool returns the bool from pointer.
+func GetBool(value *bool) bool {
+	if value != nil {
+		return *value
+	}
+
+	return false
+}
+
 // String stores v in a new string value and returns a pointer to it.
 func String(value string) *string {
 	if len(value) > 0 {
@@ -52,6 +61,20 @@ func GetTime(value *time.Time) time.Time {
 	}
 
 	return time.Time{}
+}
+
+// Float32 stores v in a new bool value and returns a pointer to it.
+func Float32(value float32) *float32 {
+	return &value
+}
+
+// GetFloat32 returns the bool from pointer.
+func GetFloat32(value *float32) float32 {
+	if value != nil {
+		return *value
+	}
+
+	return 0
 }
 
 // Timestamp converts a time to timestamp.
