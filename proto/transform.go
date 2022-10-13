@@ -91,6 +91,34 @@ func GetFloat64(value *float64) float64 {
 	return 0
 }
 
+// Int64 stores v in a new bool value and returns a pointer to it.
+func Int64(value int64) *int64 {
+	return &value
+}
+
+// GetInt64 returns the bool from pointer.
+func GetInt64(value *int64) int64 {
+	if value != nil {
+		return *value
+	}
+
+	return 0
+}
+
+// Int32 stores v in a new bool value and returns a pointer to it.
+func Int32(value int32) *int32 {
+	return &value
+}
+
+// GetInt32 returns the bool from pointer.
+func GetInt32(value *int32) int32 {
+	if value != nil {
+		return *value
+	}
+
+	return 0
+}
+
 // Timestamp converts a time to timestamp.
 func Timestamp(value *time.Time) *timestamppb.Timestamp {
 	if value != nil {
