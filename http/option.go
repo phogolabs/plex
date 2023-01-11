@@ -1,9 +1,13 @@
 package http
 
 import (
+	"context"
+	"net/http"
+	"strconv"
 	"strings"
 
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
+	"google.golang.org/protobuf/proto"
 )
 
 type (
@@ -73,6 +77,9 @@ var (
 
 	// AllOutgoingHeaders allows the service to handle all incoming request
 	AllOutgoingHeaders = runtime.WithOutgoingHeaderMatcher(preserve)
+
+	// WithForwardResponse represents a forward response
+	WithForwardResponse = runtime.WithForwardResponseOption(response)
 )
 
 func preserve(value string) (string, bool) {
@@ -81,4 +88,30 @@ func preserve(value string) (string, bool) {
 	}
 
 	return value, true
+}
+
+func response(ctx context.Context, w http.ResponseWriter, p proto.Message) error {
+	kv, ok := runtime.ServerMetadataFromContext(ctx)
+	if !ok {
+		return nil
+	}
+
+	// set http status code
+	if value := kv.HeaderMD.Get("x-http-code"); len(value) > 0 {
+		var (
+			header   = w.Header()
+			headerKV = kv.HeaderMD
+		)
+		code, err := strconv.Atoi(value[0])
+		if err != nil {
+			return err
+		}
+
+		delete(header, "Grpc-Metadata-X-Http-Code")
+		delete(headerKV, "x-http-code")
+
+		w.WriteHeader(code)
+	}
+
+	return nil
 }

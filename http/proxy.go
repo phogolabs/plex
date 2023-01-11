@@ -66,6 +66,9 @@ func NewProxy(opts ...ServeMuxOption) *Proxy {
 	opts = append(opts, WithJSONMarshaler)
 	opts = append(opts, WithFormMarshaler)
 
+	// responding
+	opts = append(opts, WithForwardResponse)
+
 	// events
 	opts = append(opts, proxy.WithErrorHandler())
 

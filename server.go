@@ -108,3 +108,6 @@ func (srv *Server) Shutdown(ctx context.Context) error {
 
 	return nil
 }
+
+// SetStatusCode sets the status code
+var SetStatusCode = grpc.SetStatusCode

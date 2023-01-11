@@ -2,6 +2,7 @@ package grpc
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 
 	"google.golang.org/grpc"
@@ -37,6 +38,13 @@ func SetCookie(ctx context.Context, cookie *http.Cookie) error {
 	}
 
 	return nil
+}
+
+// SetStatusCode sets the status code
+func SetStatusCode(ctx context.Context, code int) {
+	value := fmt.Sprintf("%v", code)
+	// set the header
+	grpc.SetHeader(ctx, metadata.Pairs("x-http-code", value))
 }
 
 // CookieFromIncomingContext returns the cookie
