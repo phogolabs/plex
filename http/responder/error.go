@@ -4,7 +4,9 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"strings"
 
+	"github.com/go-openapi/inflect"
 	"github.com/goware/errorx"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc/codes"
@@ -36,4 +38,28 @@ func PostgreSQLErrorFormatter(ctx context.Context, mux *runtime.ServeMux, marsha
 
 	// set the response body
 	marshaler.NewEncoder(w).Encode(errx)
+}
+
+// CanonicalErrorFormatter can be used to handle an error as general proto message defined by gRPC.
+func CanonicalErrorFormatter(_ context.Context, _ *runtime.ServeMux, marshaler runtime.Marshaler, w http.ResponseWriter, r *http.Request, err error) {
+	errx, _ := status.FromError(err)
+
+	type Response struct {
+		Code    string `json:"code"`
+		Message string `json:"message"`
+	}
+
+	response := &Response{
+		Code:    errx.Code().String(),
+		Message: errx.Message(),
+	}
+
+	response.Code = inflect.Underscore(response.Code)
+	response.Code = strings.ToUpper(response.Code)
+
+	// set the response status code
+	w.WriteHeader(runtime.HTTPStatusFromCode(errx.Code()))
+
+	// set the response body
+	marshaler.NewEncoder(w).Encode(response)
 }
