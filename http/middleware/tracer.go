@@ -10,8 +10,12 @@ import (
 // output parameter
 func Tracer(next http.Handler) http.Handler {
 	fn := func(w http.ResponseWriter, r *http.Request) {
-		// wrap the handler
-		handler := otelhttp.NewHandler(next, r.URL.Path)
+		options := []otelhttp.Option{
+			otelhttp.WithServerName(r.Host),
+		}
+
+		// prepare the handler
+		handler := otelhttp.NewHandler(next, r.Host, options...)
 		handler.ServeHTTP(w, r)
 	}
 
