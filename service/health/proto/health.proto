@@ -3,7 +3,6 @@ syntax = "proto3";
 package phogolabs.plex.health;
 
 import "google/api/annotations.proto";
-import "protoc-gen-openapiv2/options/annotations.proto";
 
 option go_package = "github.com/phogolabs/plex/service/health;health";
 

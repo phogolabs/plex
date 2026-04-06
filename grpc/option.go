@@ -56,3 +56,12 @@ func WithChain(chain ChainInterceptor) GatewayOption {
 
 	return GatewayOptionFunc(fn)
 }
+
+// WithServerOption appends a raw grpc.ServerOption to the Gateway
+func WithServerOption(opt grpc.ServerOption) GatewayOption {
+	fn := func(gw *Gateway) {
+		gw.Options = append(gw.Options, opt)
+	}
+
+	return GatewayOptionFunc(fn)
+}

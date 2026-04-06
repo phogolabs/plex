@@ -1,6 +1,6 @@
-version: v1
+version: v2
 
 plugins:
-  - name: gotag
+  - remote: buf.build/srikrsna/protoc-gen-gotag:v1.0.2
     out: .
     opt: paths=source_relative

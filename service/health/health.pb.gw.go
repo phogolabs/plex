@@ -10,6 +10,7 @@ package health
 
 import (
 	"context"
+	"errors"
 	"io"
 	"net/http"
 
@@ -24,185 +25,185 @@ import (
 )
 
 // Suppress "imported and not used" errors
-var _ codes.Code
-var _ io.Reader
-var _ status.Status
-var _ = runtime.String
-var _ = utilities.NewDoubleArray
-var _ = metadata.Join
+var (
+	_ codes.Code
+	_ io.Reader
+	_ status.Status
+	_ = errors.New
+	_ = runtime.String
+	_ = utilities.NewDoubleArray
+	_ = metadata.Join
+)
 
 func request_HeartbeatAPI_CheckLive_0(ctx context.Context, marshaler runtime.Marshaler, client HeartbeatAPIClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq CheckLiveRequest
-	var metadata runtime.ServerMetadata
-
+	var (
+		protoReq CheckLiveRequest
+		metadata runtime.ServerMetadata
+	)
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
 	msg, err := client.CheckLive(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
-
 }
 
 func local_request_HeartbeatAPI_CheckLive_0(ctx context.Context, marshaler runtime.Marshaler, server HeartbeatAPIServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq CheckLiveRequest
-	var metadata runtime.ServerMetadata
-
+	var (
+		protoReq CheckLiveRequest
+		metadata runtime.ServerMetadata
+	)
 	msg, err := server.CheckLive(ctx, &protoReq)
 	return msg, metadata, err
-
 }
 
 func request_HeartbeatAPI_CheckLive_1(ctx context.Context, marshaler runtime.Marshaler, client HeartbeatAPIClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq CheckLiveRequest
-	var metadata runtime.ServerMetadata
-
+	var (
+		protoReq CheckLiveRequest
+		metadata runtime.ServerMetadata
+	)
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
 	msg, err := client.CheckLive(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
-
 }
 
 func local_request_HeartbeatAPI_CheckLive_1(ctx context.Context, marshaler runtime.Marshaler, server HeartbeatAPIServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq CheckLiveRequest
-	var metadata runtime.ServerMetadata
-
+	var (
+		protoReq CheckLiveRequest
+		metadata runtime.ServerMetadata
+	)
 	msg, err := server.CheckLive(ctx, &protoReq)
 	return msg, metadata, err
-
 }
 
 func request_HeartbeatAPI_CheckReady_0(ctx context.Context, marshaler runtime.Marshaler, client HeartbeatAPIClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq CheckReadyRequest
-	var metadata runtime.ServerMetadata
-
+	var (
+		protoReq CheckReadyRequest
+		metadata runtime.ServerMetadata
+	)
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
 	msg, err := client.CheckReady(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
-
 }
 
 func local_request_HeartbeatAPI_CheckReady_0(ctx context.Context, marshaler runtime.Marshaler, server HeartbeatAPIServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq CheckReadyRequest
-	var metadata runtime.ServerMetadata
-
+	var (
+		protoReq CheckReadyRequest
+		metadata runtime.ServerMetadata
+	)
 	msg, err := server.CheckReady(ctx, &protoReq)
 	return msg, metadata, err
-
 }
 
 func request_HeartbeatAPI_CheckReady_1(ctx context.Context, marshaler runtime.Marshaler, client HeartbeatAPIClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq CheckReadyRequest
-	var metadata runtime.ServerMetadata
-
+	var (
+		protoReq CheckReadyRequest
+		metadata runtime.ServerMetadata
+	)
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
 	msg, err := client.CheckReady(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
-
 }
 
 func local_request_HeartbeatAPI_CheckReady_1(ctx context.Context, marshaler runtime.Marshaler, server HeartbeatAPIServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq CheckReadyRequest
-	var metadata runtime.ServerMetadata
-
+	var (
+		protoReq CheckReadyRequest
+		metadata runtime.ServerMetadata
+	)
 	msg, err := server.CheckReady(ctx, &protoReq)
 	return msg, metadata, err
-
 }
 
 // RegisterHeartbeatAPIHandlerServer registers the http handlers for service HeartbeatAPI to "mux".
 // UnaryRPC     :call HeartbeatAPIServer directly.
 // StreamingRPC :currently unsupported pending https://github.com/grpc/grpc-go/issues/906.
 // Note that using this registration option will cause many gRPC library features to stop working. Consider using RegisterHeartbeatAPIHandlerFromEndpoint instead.
+// GRPC interceptors will not work for this type of registration. To use interceptors, you must use the "runtime.WithMiddlewares" option in the "runtime.NewServeMux" call.
 func RegisterHeartbeatAPIHandlerServer(ctx context.Context, mux *runtime.ServeMux, server HeartbeatAPIServer) error {
-
-	mux.Handle("GET", pattern_HeartbeatAPI_CheckLive_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodGet, pattern_HeartbeatAPI_CheckLive_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		ctx, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/phogolabs.plex.health.HeartbeatAPI/CheckLive", runtime.WithHTTPPathPattern("/heartbeat/live"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/phogolabs.plex.health.HeartbeatAPI/CheckLive", runtime.WithHTTPPathPattern("/heartbeat/live"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_HeartbeatAPI_CheckLive_0(ctx, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_HeartbeatAPI_CheckLive_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
-		ctx = runtime.NewServerMetadataContext(ctx, md)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
-			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
-		forward_HeartbeatAPI_CheckLive_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
+		forward_HeartbeatAPI_CheckLive_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-
-	mux.Handle("HEAD", pattern_HeartbeatAPI_CheckLive_1, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodHead, pattern_HeartbeatAPI_CheckLive_1, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		ctx, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/phogolabs.plex.health.HeartbeatAPI/CheckLive", runtime.WithHTTPPathPattern("/heartbeat/live"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/phogolabs.plex.health.HeartbeatAPI/CheckLive", runtime.WithHTTPPathPattern("/heartbeat/live"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_HeartbeatAPI_CheckLive_1(ctx, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_HeartbeatAPI_CheckLive_1(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
-		ctx = runtime.NewServerMetadataContext(ctx, md)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
-			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
-		forward_HeartbeatAPI_CheckLive_1(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
+		forward_HeartbeatAPI_CheckLive_1(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-
-	mux.Handle("GET", pattern_HeartbeatAPI_CheckReady_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodGet, pattern_HeartbeatAPI_CheckReady_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		ctx, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/phogolabs.plex.health.HeartbeatAPI/CheckReady", runtime.WithHTTPPathPattern("/heartbeat/ready"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/phogolabs.plex.health.HeartbeatAPI/CheckReady", runtime.WithHTTPPathPattern("/heartbeat/ready"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_HeartbeatAPI_CheckReady_0(ctx, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_HeartbeatAPI_CheckReady_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
-		ctx = runtime.NewServerMetadataContext(ctx, md)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
-			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
-		forward_HeartbeatAPI_CheckReady_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
+		forward_HeartbeatAPI_CheckReady_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-
-	mux.Handle("HEAD", pattern_HeartbeatAPI_CheckReady_1, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodHead, pattern_HeartbeatAPI_CheckReady_1, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		ctx, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/phogolabs.plex.health.HeartbeatAPI/CheckReady", runtime.WithHTTPPathPattern("/heartbeat/ready"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/phogolabs.plex.health.HeartbeatAPI/CheckReady", runtime.WithHTTPPathPattern("/heartbeat/ready"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_HeartbeatAPI_CheckReady_1(ctx, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_HeartbeatAPI_CheckReady_1(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
-		ctx = runtime.NewServerMetadataContext(ctx, md)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
-			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
-		forward_HeartbeatAPI_CheckReady_1(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
+		forward_HeartbeatAPI_CheckReady_1(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
 
 	return nil
@@ -211,25 +212,24 @@ func RegisterHeartbeatAPIHandlerServer(ctx context.Context, mux *runtime.ServeMu
 // RegisterHeartbeatAPIHandlerFromEndpoint is same as RegisterHeartbeatAPIHandler but
 // automatically dials to "endpoint" and closes the connection when "ctx" gets done.
 func RegisterHeartbeatAPIHandlerFromEndpoint(ctx context.Context, mux *runtime.ServeMux, endpoint string, opts []grpc.DialOption) (err error) {
-	conn, err := grpc.Dial(endpoint, opts...)
+	conn, err := grpc.NewClient(endpoint, opts...)
 	if err != nil {
 		return err
 	}
 	defer func() {
 		if err != nil {
 			if cerr := conn.Close(); cerr != nil {
-				grpclog.Infof("Failed to close conn to %s: %v", endpoint, cerr)
+				grpclog.Errorf("Failed to close conn to %s: %v", endpoint, cerr)
 			}
 			return
 		}
 		go func() {
 			<-ctx.Done()
 			if cerr := conn.Close(); cerr != nil {
-				grpclog.Infof("Failed to close conn to %s: %v", endpoint, cerr)
+				grpclog.Errorf("Failed to close conn to %s: %v", endpoint, cerr)
 			}
 		}()
 	}()
-
 	return RegisterHeartbeatAPIHandler(ctx, mux, conn)
 }
 
@@ -243,112 +243,89 @@ func RegisterHeartbeatAPIHandler(ctx context.Context, mux *runtime.ServeMux, con
 // to "mux". The handlers forward requests to the grpc endpoint over the given implementation of "HeartbeatAPIClient".
 // Note: the gRPC framework executes interceptors within the gRPC handler. If the passed in "HeartbeatAPIClient"
 // doesn't go through the normal gRPC flow (creating a gRPC client etc.) then it will be up to the passed in
-// "HeartbeatAPIClient" to call the correct interceptors.
+// "HeartbeatAPIClient" to call the correct interceptors. This client ignores the HTTP middlewares.
 func RegisterHeartbeatAPIHandlerClient(ctx context.Context, mux *runtime.ServeMux, client HeartbeatAPIClient) error {
-
-	mux.Handle("GET", pattern_HeartbeatAPI_CheckLive_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodGet, pattern_HeartbeatAPI_CheckLive_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		ctx, err = runtime.AnnotateContext(ctx, mux, req, "/phogolabs.plex.health.HeartbeatAPI/CheckLive", runtime.WithHTTPPathPattern("/heartbeat/live"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/phogolabs.plex.health.HeartbeatAPI/CheckLive", runtime.WithHTTPPathPattern("/heartbeat/live"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_HeartbeatAPI_CheckLive_0(ctx, inboundMarshaler, client, req, pathParams)
-		ctx = runtime.NewServerMetadataContext(ctx, md)
+		resp, md, err := request_HeartbeatAPI_CheckLive_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
-			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
-		forward_HeartbeatAPI_CheckLive_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
+		forward_HeartbeatAPI_CheckLive_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-
-	mux.Handle("HEAD", pattern_HeartbeatAPI_CheckLive_1, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodHead, pattern_HeartbeatAPI_CheckLive_1, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		ctx, err = runtime.AnnotateContext(ctx, mux, req, "/phogolabs.plex.health.HeartbeatAPI/CheckLive", runtime.WithHTTPPathPattern("/heartbeat/live"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/phogolabs.plex.health.HeartbeatAPI/CheckLive", runtime.WithHTTPPathPattern("/heartbeat/live"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_HeartbeatAPI_CheckLive_1(ctx, inboundMarshaler, client, req, pathParams)
-		ctx = runtime.NewServerMetadataContext(ctx, md)
+		resp, md, err := request_HeartbeatAPI_CheckLive_1(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
-			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
-		forward_HeartbeatAPI_CheckLive_1(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
+		forward_HeartbeatAPI_CheckLive_1(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-
-	mux.Handle("GET", pattern_HeartbeatAPI_CheckReady_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodGet, pattern_HeartbeatAPI_CheckReady_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		ctx, err = runtime.AnnotateContext(ctx, mux, req, "/phogolabs.plex.health.HeartbeatAPI/CheckReady", runtime.WithHTTPPathPattern("/heartbeat/ready"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/phogolabs.plex.health.HeartbeatAPI/CheckReady", runtime.WithHTTPPathPattern("/heartbeat/ready"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_HeartbeatAPI_CheckReady_0(ctx, inboundMarshaler, client, req, pathParams)
-		ctx = runtime.NewServerMetadataContext(ctx, md)
+		resp, md, err := request_HeartbeatAPI_CheckReady_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
-			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
-		forward_HeartbeatAPI_CheckReady_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
+		forward_HeartbeatAPI_CheckReady_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-
-	mux.Handle("HEAD", pattern_HeartbeatAPI_CheckReady_1, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodHead, pattern_HeartbeatAPI_CheckReady_1, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		ctx, err = runtime.AnnotateContext(ctx, mux, req, "/phogolabs.plex.health.HeartbeatAPI/CheckReady", runtime.WithHTTPPathPattern("/heartbeat/ready"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/phogolabs.plex.health.HeartbeatAPI/CheckReady", runtime.WithHTTPPathPattern("/heartbeat/ready"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_HeartbeatAPI_CheckReady_1(ctx, inboundMarshaler, client, req, pathParams)
-		ctx = runtime.NewServerMetadataContext(ctx, md)
+		resp, md, err := request_HeartbeatAPI_CheckReady_1(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
-			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
-		forward_HeartbeatAPI_CheckReady_1(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
+		forward_HeartbeatAPI_CheckReady_1(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-
 	return nil
 }
 
 var (
-	pattern_HeartbeatAPI_CheckLive_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"heartbeat", "live"}, ""))
-
-	pattern_HeartbeatAPI_CheckLive_1 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"heartbeat", "live"}, ""))
-
+	pattern_HeartbeatAPI_CheckLive_0  = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"heartbeat", "live"}, ""))
+	pattern_HeartbeatAPI_CheckLive_1  = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"heartbeat", "live"}, ""))
 	pattern_HeartbeatAPI_CheckReady_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"heartbeat", "ready"}, ""))
-
 	pattern_HeartbeatAPI_CheckReady_1 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"heartbeat", "ready"}, ""))
 )
 
 var (
-	forward_HeartbeatAPI_CheckLive_0 = runtime.ForwardResponseMessage
-
-	forward_HeartbeatAPI_CheckLive_1 = runtime.ForwardResponseMessage
-
+	forward_HeartbeatAPI_CheckLive_0  = runtime.ForwardResponseMessage
+	forward_HeartbeatAPI_CheckLive_1  = runtime.ForwardResponseMessage
 	forward_HeartbeatAPI_CheckReady_0 = runtime.ForwardResponseMessage
-
 	forward_HeartbeatAPI_CheckReady_1 = runtime.ForwardResponseMessage
 )
