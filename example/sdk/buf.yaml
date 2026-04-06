@@ -1,15 +1,16 @@
-version: v1
+version: v2
 
-name: github.com/cliche-digital/plex
+modules:
+  - path: proto
 
-build:
-  roots:
-    - ./proto
+deps:
+  - buf.build/googleapis/googleapis
+  - buf.build/grpc-ecosystem/grpc-gateway
+  - buf.build/srikrsna/protoc-gen-gotag
+  - buf.build/iamralch/protoc-vendor
 
 lint:
   service_suffix: API
-  # comment rules
-  allow_comment_ignores: true
   # rpc rules
   rpc_allow_same_request_response: false
   rpc_allow_google_protobuf_empty_requests: false
@@ -17,13 +18,8 @@ lint:
   # enum rules
   enum_zero_value_suffix: _UNSPECIFIED
 
-  ignore:
-    - google
-    - protoc-gen-openapiv2
-    - protoc-gen-gotaggger
-
   use:
-    - DEFAULT
+    - STANDARD
     - COMMENTS
     - UNARY_RPC
 

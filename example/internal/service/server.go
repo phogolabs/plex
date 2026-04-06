@@ -13,16 +13,15 @@ func New() *plex.Server {
 	// create the plex server
 	server := plex.NewServer()
 
-	server.Proxy.UseDialOption(interceptor.ClientUnaryTracer)
-	server.Proxy.UseDialOption(interceptor.ClientStreamTracer)
+	server.Proxy.UseDialOption(interceptor.ClientTracer)
 
 	server.Proxy.OnError(responder.PostgreSQLErrorFormatter)
 	server.Proxy.Router().Use(middleware.Tracer)
 
 	server.Gateway = grpc.NewGateway(
+		grpc.WithServerOption(interceptor.ServerTracer),
 		grpc.WithChain(
 			grpc.ChainInterceptor{
-				interceptor.Tracer,
 				interceptor.Logger,
 				interceptor.Recoverer,
 				interceptor.Defaulter,
