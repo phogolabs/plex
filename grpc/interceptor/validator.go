@@ -41,13 +41,15 @@ func init() {
 
 	// Register custom type func for protobuf StringValue wrapper so that
 	// string validation tags (email, e164, url, etc.) operate on the inner
-	// Value string rather than the struct pointer.
+	// Value string rather than the struct.
+	// NOTE: validator/v10 dereferences pointer fields before CustomTypeFunc
+	// lookup, so we must register for the struct type (not the pointer type).
 	Validator.Validator.RegisterCustomTypeFunc(func(field reflect.Value) interface{} {
-		if v, ok := field.Interface().(*wrapperspb.StringValue); ok && v != nil {
-			return v.GetValue()
+		if sv, ok := field.Interface().(wrapperspb.StringValue); ok {
+			return sv.GetValue()
 		}
-		return nil
-	}, (*wrapperspb.StringValue)(nil))
+		return ""
+	}, wrapperspb.StringValue{})
 }
 
 // ValidationHandler represents a logger
