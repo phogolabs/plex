@@ -16,6 +16,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
+	"google.golang.org/protobuf/types/known/wrapperspb"
 )
 
 // Validatable represents a validatable type
@@ -37,6 +38,16 @@ func init() {
 	if err := validateEn.RegisterDefaultTranslations(Validator.Validator, translator); err != nil {
 		panic(err)
 	}
+
+	// Register custom type func for protobuf StringValue wrapper so that
+	// string validation tags (email, e164, url, etc.) operate on the inner
+	// Value string rather than the struct pointer.
+	Validator.Validator.RegisterCustomTypeFunc(func(field reflect.Value) interface{} {
+		if v, ok := field.Interface().(*wrapperspb.StringValue); ok && v != nil {
+			return v.GetValue()
+		}
+		return nil
+	}, (*wrapperspb.StringValue)(nil))
 }
 
 // ValidationHandler represents a logger
