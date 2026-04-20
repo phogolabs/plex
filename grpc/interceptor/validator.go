@@ -44,11 +44,17 @@ func init() {
 	// Value string rather than the struct.
 	// NOTE: validator/v10 dereferences pointer fields before CustomTypeFunc
 	// lookup, so we must register for the struct type (not the pointer type).
+	// Return nil when the inner value is empty so that `omitempty` triggers:
+	// hasValue() treats a non-nil interface with "" as present (because
+	// fldIsPointer is set from the *StringValue pointer), which would run
+	// e.g. the `email` tag on an empty string and fail.
 	Validator.Validator.RegisterCustomTypeFunc(func(field reflect.Value) interface{} {
 		if sv, ok := field.Interface().(wrapperspb.StringValue); ok {
-			return sv.GetValue()
+			if v := sv.GetValue(); v != "" {
+				return v
+			}
 		}
-		return ""
+		return nil
 	}, wrapperspb.StringValue{})
 }
 
