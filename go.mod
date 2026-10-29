@@ -4,7 +4,7 @@ go 1.25.8
 
 require (
 	github.com/davecgh/go-spew v1.1.1
-	github.com/go-chi/chi/v5 v5.2.5
+	github.com/go-chi/chi/v5 v5.4.0
 	github.com/go-openapi/inflect v0.21.5
 	github.com/go-playground/locales v0.14.1
 	github.com/go-playground/mold v2.2.0+incompatible
